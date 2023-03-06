@@ -1,0 +1,73 @@
+{
+  "name": "express-ts-boilerplate",
+  "version": "1.0.0",
+  "description": "An Express.js boilerplate backend",
+  "author": "Louis-Kaan Ay",
+  "license": "MIT",
+  "private": false,
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "tsc --project './tsconfig.json' --watch &NODE_ENV=development nodemon ./dist/index.js",
+    "build": "tsc --project './tsconfig.json'",
+    "start": "yarn run build && NODE_ENV=production node ./dist/index.js",
+    "watch": "tsc --project './tsconfig.json' --watch",
+    "lint": "eslint src/**/*.{ts,css,js,html}",
+    "lint:fix": "eslint --fix --ext src/**/*.ts",
+    "code:format": "prettier --write src/**/*.ts",
+    "code:check": "prettier --check src/**/*.ts",
+    "code:format:specific-file": "prettier --write ",
+    "test": "jest",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.35.0",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node-lts-strictest-esm": "^18.12.1",
+    "@types/compression": "^1.7.2",
+    "@types/cors": "^2.8.13",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.4.0",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "husky": "^8.0.3",
+    "jest": "^29.4.3",
+    "nodemon": "^2.0.21",
+    "prettier": "^2.8.4",
+    "prettier-eslint": "^15.0.1",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.0.5",
+    "typescript": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "npx prettier --write",
+      "npx eslint --fix"
+    ]
+  }
+}
