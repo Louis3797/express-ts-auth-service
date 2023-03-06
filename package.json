@@ -1,7 +1,7 @@
 {
-  "name": "express-ts-boilerplate",
+  "name": "express-ts-auth-service",
   "version": "1.0.0",
-  "description": "An Express.js boilerplate backend",
+  "description": "An Express.js auth service",
   "author": "Louis-Kaan Ay",
   "license": "MIT",
   "private": false,
