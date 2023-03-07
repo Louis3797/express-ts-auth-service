@@ -1,0 +1,38 @@
+version: '1'
+
+services:
+  # Express Server
+  auth-service:
+    build: ./
+    image: express-auth-service
+    container_name: express-auth-service
+    depends_on:
+      - mysql
+      - redis
+    env_file:
+      - ./env
+    ports:
+      - "4040:4040"
+
+
+  # MySQL Database
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    volumes:
+      - ./data/db:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./env
+
+
+  # Redis Database
+  redis:
+    image: redis:alpine
+    container_name: redis
+    volumes:
+      - ./data/db:/var/lib/redis
+    ports:
+      - "6379:6379"
