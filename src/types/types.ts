@@ -1,5 +1,4 @@
 import type { NextFunction, Request, Response } from 'express';
-import type { Query, Send } from 'express-serve-static-core';
 
 // See this for the following types
 // https://stackoverflow.com/questions/34508081/how-to-add-typescript-definitions-to-express-req-res
