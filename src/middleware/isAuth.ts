@@ -27,7 +27,7 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
     token,
     config.access_token_secret,
     (err: unknown, payload: JwtPayload) => {
-      if (err) return res.sendStatus(403); //invalid token
+      if (err) return res.sendStatus(httpStatus.FORBIDDEN); //invalid token
       req.payload = payload;
 
       next();
