@@ -30,10 +30,17 @@ model Account {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String
-  email         String?   @unique
+  email         String?        @unique
   password      String
   emailVerified DateTime?
   accounts      Account[]
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  token  String  @id
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
