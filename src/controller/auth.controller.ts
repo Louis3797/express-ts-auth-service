@@ -1,4 +1,4 @@
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import prismaClient from '../config/prisma';
 import * as argon2 from 'argon2';
@@ -8,6 +8,11 @@ import {
   createRefreshToken,
 } from '../utils/generateTokens.util';
 import config from '../config/config';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const { verify } = jwt;
 
 type UserSignUpCredentials = {
   username: string;
@@ -23,7 +28,6 @@ export const handleSingUp = async (
 ) => {
   const { username, email, password } = req.body;
 
-  console.log(req.body);
   if (!username || !email || !password) {
     return res.status(httpStatus.BAD_REQUEST).json({
       message: 'Username, email and password are required!',
@@ -125,9 +129,9 @@ export const handleLogin = async (
         });
       }
 
-      const accessToken = createAccessToken(user);
+      const accessToken = createAccessToken(user.id);
 
-      const newRefreshToken = createRefreshToken(user);
+      const newRefreshToken = createRefreshToken(user.id);
 
       // store new refresh token in db
       await prismaClient.refreshToken.create({
@@ -188,6 +192,80 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
   res.sendStatus(204);
 };
 
-export function handleRefresh(arg0: string, handleRefresh: any) {
-  throw new Error('Function not implemented.');
-}
+export const handleRefresh = async (req: Request, res: Response) => {
+  const cookies = req.cookies;
+  if (!cookies?.jid) return res.send(httpStatus.UNAUTHORIZED);
+
+  const refreshToken = cookies.jid;
+
+  res.clearCookie(config.refresh_token_cookie_name, {
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+  });
+
+  // check if refresh token is in db
+  const foundRefreshToken = await prismaClient.refreshToken.findUnique({
+    where: {
+      token: refreshToken,
+    },
+  });
+
+  // Detected refresh token reuse!
+  if (!foundRefreshToken) {
+    verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      async (err: unknown, payload: JwtPayload) => {
+        if (err) return res.sendStatus(httpStatus.FORBIDDEN);
+        console.log('attempted refresh token reuse!');
+        await prismaClient.refreshToken.deleteMany({
+          where: {
+            userId: payload.userId,
+          },
+        });
+      }
+    );
+    return res.sendStatus(httpStatus.FORBIDDEN);
+  }
+
+  // delete from db
+  prismaClient.refreshToken.delete({
+    where: {
+      token: refreshToken,
+    },
+  });
+
+  // evaluate jwt
+  verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (err: unknown, payload: JwtPayload) => {
+      if (err || foundRefreshToken.userId !== payload.userId)
+        return res.sendStatus(httpStatus.FORBIDDEN);
+
+      // Refresh token was still valid
+      const accessToken = createAccessToken(payload.userId);
+
+      const newRefreshToken = createRefreshToken(payload.userId);
+
+      // add refresh token to db
+      await prismaClient.refreshToken.create({
+        data: {
+          token: refreshToken,
+          userId: payload.userId,
+        },
+      });
+
+      // Creates Secure Cookie with refresh token
+      res.cookie(config.refresh_token_cookie_name, newRefreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      res.json({ accessToken });
+    }
+  );
+};
