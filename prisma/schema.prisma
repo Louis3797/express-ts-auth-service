@@ -37,10 +37,18 @@ model User {
   emailVerified DateTime?
   accounts      Account[]
   refreshTokens RefreshToken[]
+  resetToken    ResetToken[]
 }
 
 model RefreshToken {
-  token  String  @id
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  token  String @id
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model ResetToken {
+  token     String   @id
+  expiresAt DateTime
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
