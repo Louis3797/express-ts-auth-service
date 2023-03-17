@@ -1,7 +1,12 @@
 import httpStatus from 'http-status';
 import type { Request, Response, NextFunction } from 'express';
-import isAuth from '../..//src/middleware/isAuth';
+import isAuth from '../../src/middleware/isAuth';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import config from '../../src/config/config';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const { sign } = jwt;
 
 describe('isAuth middleware', () => {
   let req: Request;
@@ -45,20 +50,15 @@ describe('isAuth middleware', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  //   it('should call next() if token is valid', () => {
-  //     req.headers = { authorization: 'Bearer validtoken' };
+  it('should call next() if token is valid', () => {
+    const payload: JwtPayload = { userId: '123' };
+    const token = sign(payload, config.access_token_secret);
 
-  //     const payload: JwtPayload = { userId: '1234' };
+    req.headers = { authorization: `Bearer ${token}` };
 
-  //     const verify = jest.spyOn(jwt, 'verify');
-  //  verify.mockImplementation(() => () => ({ verified: 'true' }));
+    isAuth(req, res, next);
 
-  //     expect(verifyMock).toHaveBeenCalledWith(
-  //       'validtoken',
-  //       'your-access-token-secret',
-  //       expect.any(Function)
-  //     );
-  //     expect(req.payload).toEqual(payload);
-  //     expect(next).toHaveBeenCalled();
-  //   });
+    expect(req.payload).toBeDefined();
+    expect(next).toHaveBeenCalled();
+  });
 });

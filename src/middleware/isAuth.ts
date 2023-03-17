@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 
-import jwt, { Jwt, JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../config/config';
 
 // Why does 'jsonwebtoken' not support es6 module support ?????
@@ -19,7 +20,9 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
   if (!authHeader || !authHeader?.startsWith('Bearer '))
     return res.sendStatus(httpStatus.UNAUTHORIZED);
 
-  const token: Jwt | undefined = authHeader.split(' ')[1];
+  const token: string | undefined = authHeader.split(' ')[1];
+
+  if (!token) return res.sendStatus(httpStatus.UNAUTHORIZED);
 
   verify(
     token,
