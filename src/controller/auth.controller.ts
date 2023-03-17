@@ -2,7 +2,11 @@ import type { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import prismaClient from '../config/prisma';
 import * as argon2 from 'argon2';
-import type { TypedRequest } from '../types/types';
+import type {
+  TypedRequest,
+  UserLoginCredentials,
+  UserSignUpCredentials,
+} from '../types/types';
 import {
   createAccessToken,
   createRefreshToken,
@@ -13,14 +17,6 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const { verify } = jwt;
-
-type UserSignUpCredentials = {
-  username: string;
-  email: string;
-  password: string;
-};
-
-type UserLoginCredentials = Omit<UserSignUpCredentials, 'username'>;
 
 export const handleSingUp = async (
   req: TypedRequest<UserSignUpCredentials>,

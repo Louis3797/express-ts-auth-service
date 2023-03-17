@@ -41,3 +41,10 @@ export type ExpressMiddleware<
 //   /* strongly typed `req.body`. yay autocomplete 🎉 */
 //   res.json({ message: 'you have signed up' }) // strongly typed response obj
 // };
+export type UserSignUpCredentials = {
+  username: string;
+  email: string;
+  password: string;
+};
+
+export type UserLoginCredentials = Omit<UserSignUpCredentials, 'username'>;
