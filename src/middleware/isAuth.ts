@@ -14,9 +14,7 @@ const { verify } = jwt;
 const isAuth = (req: Request, res: Response, next: NextFunction) => {
   // token looks like 'Bearer vnjaknvijdaknvikbnvreiudfnvriengviewjkdsbnvierj'
 
-  const authHeader =
-    req.headers.authorization ||
-    (req.headers['Authorization'] as string | undefined);
+  const authHeader = req.headers?.authorization;
 
   if (!authHeader || !authHeader?.startsWith('Bearer '))
     return res.sendStatus(httpStatus.UNAUTHORIZED);
