@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import compressFilter from './utils/compressFilter.util';
 import config from './config/config';
-import { authRouter, userRouter } from './routes/v1';
+import { authRouter } from './routes/v1';
 import isAuth from './middleware/isAuth';
 
 const app: Express = express();
