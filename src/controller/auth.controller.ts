@@ -13,17 +13,28 @@ import {
 } from '../utils/generateTokens.util';
 import config from '../config/config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import {
+  clearRefreshTokenCookieConfig,
+  refreshTokenCookieConfig,
+} from '../config/cookieConfig';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const { verify } = jwt;
 
+/**
+ * Handles Signup
+ * @param req
+ * @param res
+ * @returns
+ */
 export const handleSingUp = async (
   req: TypedRequest<UserSignUpCredentials>,
   res: Response
 ) => {
   const { username, email, password } = req.body;
 
+  // check req.body values
   if (!username || !email || !password) {
     return res.status(httpStatus.BAD_REQUEST).json({
       message: 'Username, email and password are required!',
@@ -55,6 +66,12 @@ export const handleSingUp = async (
   }
 };
 
+/**
+ * Handles Login
+ * @param req
+ * @param res
+ * @returns
+ */
 export const handleLogin = async (
   req: TypedRequest<UserLoginCredentials>,
   res: Response
@@ -78,11 +95,11 @@ export const handleLogin = async (
   if (!user) return res.sendStatus(httpStatus.UNAUTHORIZED);
 
   // check if email is verified
-  // if (!user.emailVerified) {
-  //   res.send(httpStatus.UNAUTHORIZED).json({
-  //     message: 'Your email is not verified! Please confirm your email!',
-  //   });
-  // }
+  if (!user.emailVerified) {
+    res.send(httpStatus.UNAUTHORIZED).json({
+      message: 'Your email is not verified! Please confirm your email!',
+    });
+  }
 
   // check password
   try {
@@ -118,11 +135,10 @@ export const handleLogin = async (
         }
 
         // also clear the refresh token in the cookie
-        res.clearCookie(config.refresh_token_cookie_name, {
-          httpOnly: true,
-          sameSite: 'none',
-          secure: true,
-        });
+        res.clearCookie(
+          config.refresh_token_cookie_name,
+          clearRefreshTokenCookieConfig
+        );
       }
 
       const accessToken = createAccessToken(user.id);
@@ -138,12 +154,11 @@ export const handleLogin = async (
       });
 
       // save refresh token in cookie
-      res.cookie(config.refresh_token_cookie_name, newRefreshToken, {
-        httpOnly: true,
-        sameSite: 'none',
-        secure: true,
-        maxAge: 24 * 60 * 60 * 1000,
-      });
+      res.cookie(
+        config.refresh_token_cookie_name,
+        newRefreshToken,
+        refreshTokenCookieConfig
+      );
 
       // send access token per json to user so it can be stored in the localStorage
       return res.json({ accessToken });
@@ -155,6 +170,12 @@ export const handleLogin = async (
   }
 };
 
+/**
+ * Handles Logout
+ * @param req
+ * @param res
+ * @returns
+ */
 export const handleLogout = async (req: TypedRequest, res: Response) => {
   const cookies = req.cookies;
 
@@ -167,11 +188,10 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
   });
 
   if (!foundRft) {
-    res.clearCookie(config.refresh_token_cookie_name, {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: true,
-    });
+    res.clearCookie(
+      config.refresh_token_cookie_name,
+      clearRefreshTokenCookieConfig
+    );
     return res.sendStatus(204);
   }
 
@@ -180,25 +200,29 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
     where: { token: refreshToken },
   });
 
-  res.clearCookie(config.refresh_token_cookie_name, {
-    httpOnly: true,
-    sameSite: 'none',
-    secure: true,
-  });
+  res.clearCookie(
+    config.refresh_token_cookie_name,
+    clearRefreshTokenCookieConfig
+  );
   res.sendStatus(204);
 };
 
+/**
+ * Handles refreshing for access tokens
+ * @param req
+ * @param res
+ * @returns
+ */
 export const handleRefresh = async (req: Request, res: Response) => {
   const cookies = req.cookies;
   if (!cookies?.jid) return res.send(httpStatus.UNAUTHORIZED);
 
   const refreshToken = cookies.jid;
 
-  res.clearCookie(config.refresh_token_cookie_name, {
-    httpOnly: true,
-    sameSite: 'none',
-    secure: true,
-  });
+  res.clearCookie(
+    config.refresh_token_cookie_name,
+    clearRefreshTokenCookieConfig
+  );
 
   // check if refresh token is in db
   const foundRefreshToken = await prismaClient.refreshToken.findUnique({
@@ -254,12 +278,11 @@ export const handleRefresh = async (req: Request, res: Response) => {
       });
 
       // Creates Secure Cookie with refresh token
-      res.cookie(config.refresh_token_cookie_name, newRefreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-        maxAge: 24 * 60 * 60 * 1000,
-      });
+      res.cookie(
+        config.refresh_token_cookie_name,
+        newRefreshToken,
+        refreshTokenCookieConfig
+      );
 
       res.json({ accessToken });
     }
