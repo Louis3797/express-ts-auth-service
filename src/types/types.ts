@@ -48,3 +48,11 @@ export type UserSignUpCredentials = {
 };
 
 export type UserLoginCredentials = Omit<UserSignUpCredentials, 'username'>;
+
+export type ForgotPasswordRequestBodyType = {
+  email: string;
+};
+
+export type ResetPasswordRequestBodyType = {
+  newPassword: string;
+};

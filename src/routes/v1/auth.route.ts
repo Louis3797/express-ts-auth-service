@@ -12,8 +12,8 @@ authRouter.post('/logout', authController.handleLogout);
 
 authRouter.post('/refresh', authController.handleRefresh);
 
-// authRouter.post('/forgot-password', authController.forgotPassword);
-// authRouter.post('/reset-password', authController.resetPassword);
+authRouter.post('/forgot-password', authController.handleForgotPassword);
+authRouter.post('/reset-password/:token', authController.handleResetPassword);
 
 // authRouter.post(
 //   '/send-verification-email',
