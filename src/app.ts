@@ -33,8 +33,6 @@ app.use(
 
 app.use('/api/v1/auth', authRouter);
 
-app.use('/api/v1/user', userRouter);
-
 app.use('/secret', isAuth, (_req, res) => {
   res.json({
     message: 'You can see me',
