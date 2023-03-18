@@ -4,7 +4,12 @@ import type { NextFunction, Request, Response } from 'express';
 // https://stackoverflow.com/questions/34508081/how-to-add-typescript-definitions-to-express-req-res
 // https://stackoverflow.com/questions/61132262/typescript-deep-partial
 
-type DeepPartial<T> = T extends object
+export type RequireAtLeastOne<T> = {
+  [K in keyof T]-?: Required<Pick<T, K>> &
+    Partial<Pick<T, Exclude<keyof T, K>>>;
+}[keyof T];
+
+export type DeepPartial<T> = T extends object
   ? {
       [P in keyof T]?: DeepPartial<T[P]>;
     }
