@@ -1,16 +1,23 @@
 import { Router } from 'express';
-import * as authController from '../../controller/auth.controller';
+import validate from '../../middleware/validate';
+import {
+  sendVerifyEmailSchema,
+  verifyEmailSchema,
+} from '../../validations/verifyEmail.validation';
+import * as emailController from '../../controller/verifyEmail.controller';
 
 const verifyEmailRouter = Router();
 
 verifyEmailRouter.post(
   '/send-verification-email',
-  authController.sendVerificationEmail
+  validate(sendVerifyEmailSchema),
+  emailController.sendVerificationEmail
 );
 
 verifyEmailRouter.post(
   '/verify-email/:token',
-  authController.handleVerifyEmail
+  validate(verifyEmailSchema),
+  emailController.handleVerifyEmail
 );
 
 export default verifyEmailRouter;
