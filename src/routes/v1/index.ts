@@ -1,5 +1,5 @@
 import authRouter from './auth.route';
-import type passwordRouter from './password.route';
+import passwordRouter from './password.route';
 import verifyEmailRouter from './verifyEmail.route';
 
 export { authRouter, verifyEmailRouter, passwordRouter };

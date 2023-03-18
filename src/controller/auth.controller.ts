@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import prismaClient from '../config/prisma';
+import { v4 as uuidv4 } from 'uuid';
 import * as argon2 from 'argon2';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import prismaClient from '../config/prisma';
 import type {
-  EmailRequestBody,
-  ResetPasswordRequestBodyType,
   TypedRequest,
   UserLoginCredentials,
   UserSignUpCredentials,
@@ -14,13 +14,14 @@ import {
   createRefreshToken,
 } from '../utils/generateTokens.util';
 import config from '../config/config';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+
 import {
   clearRefreshTokenCookieConfig,
   refreshTokenCookieConfig,
 } from '../config/cookieConfig';
-import { v4 as uuidv4 } from 'uuid';
-import { sendResetEmail, sendVerifyEmail } from '../utils/sendEmail.util';
+
+import { sendVerifyEmail } from '../utils/sendEmail.util';
+import logger from '../middleware/logger';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -163,12 +164,14 @@ export const handleLogin = async (
       const newRefreshToken = createRefreshToken(user.id);
 
       // store new refresh token in db
-      await prismaClient.refreshToken.create({
+      const dbRefreshToken = await prismaClient.refreshToken.create({
         data: {
           token: newRefreshToken,
           userId: user.id,
         },
       });
+
+      console.log(dbRefreshToken);
 
       // save refresh token in cookie
       res.cookie(
@@ -231,16 +234,18 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
  * @returns
  */
 export const handleRefresh = async (req: Request, res: Response) => {
-  const cookies = req.cookies;
-  if (!cookies?.jid) return res.send(httpStatus.UNAUTHORIZED);
+  const token: string | undefined =
+    req.cookies[config.refresh_token_cookie_name];
 
-  const refreshToken = cookies.jid;
+  if (!token) return res.sendStatus(httpStatus.UNAUTHORIZED);
 
+  const refreshToken = token;
+
+  // clear refresh cookie
   res.clearCookie(
     config.refresh_token_cookie_name,
     clearRefreshTokenCookieConfig
   );
-
   // check if refresh token is in db
   const foundRefreshToken = await prismaClient.refreshToken.findUnique({
     where: {
@@ -255,7 +260,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
       process.env.REFRESH_TOKEN_SECRET,
       async (err: unknown, payload: JwtPayload) => {
         if (err) return res.sendStatus(httpStatus.FORBIDDEN);
-        console.log('attempted refresh token reuse!');
+        logger.warn('attempted refresh token reuse!');
         await prismaClient.refreshToken.deleteMany({
           where: {
             userId: payload.userId,
@@ -267,7 +272,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
   }
 
   // delete from db
-  prismaClient.refreshToken.delete({
+  await prismaClient.refreshToken.delete({
     where: {
       token: refreshToken,
     },
@@ -287,12 +292,16 @@ export const handleRefresh = async (req: Request, res: Response) => {
       const newRefreshToken = createRefreshToken(payload.userId);
 
       // add refresh token to db
-      await prismaClient.refreshToken.create({
-        data: {
-          token: refreshToken,
-          userId: payload.userId,
-        },
-      });
+      await prismaClient.refreshToken
+        .create({
+          data: {
+            token: newRefreshToken,
+            userId: payload.userId,
+          },
+        })
+        .catch((err) => {
+          logger.error(err);
+        });
 
       // Creates Secure Cookie with refresh token
       res.cookie(
@@ -304,195 +313,4 @@ export const handleRefresh = async (req: Request, res: Response) => {
       res.json({ accessToken });
     }
   );
-};
-
-/**
- * Sends Forgot password email
- * @param req
- * @param res
- * @returns
- */
-export const handleForgotPassword = async (
-  req: TypedRequest<EmailRequestBody>,
-  res: Response
-) => {
-  const { email } = req.body;
-
-  // check req.body values
-  if (!email) {
-    return res.status(httpStatus.BAD_REQUEST).json({
-      message: 'Email is required!',
-    });
-  }
-
-  // Check if the email exists in the database
-  const user = await prismaClient.user.findUnique({ where: { email } });
-  if (!user) {
-    return res.status(httpStatus.CONFLICT).json({ error: 'User not found' });
-  }
-
-  // Generate a reset token and save it to the database
-  const resetToken = uuidv4();
-  const expiresAt = new Date(Date.now() + 3600000); // Token expires in 1 hour
-  await prismaClient.resetToken.create({
-    data: {
-      token: resetToken,
-      expiresAt: expiresAt,
-      userId: user.id,
-    },
-  });
-
-  // Send an email with the reset link
-  sendResetEmail(email, resetToken);
-
-  // Return a success message
-  res.status(httpStatus.OK).json({ message: 'Password reset email sent' });
-};
-
-/**
- * Handles Password reset
- * @param req
- * @param res
- * @returns
- */
-export const handleResetPassword = async (
-  req: TypedRequest<ResetPasswordRequestBodyType>,
-  res: Response
-) => {
-  const { token } = req.params;
-  const { newPassword } = req.body;
-
-  if (!token) return res.sendStatus(httpStatus.NOT_FOUND);
-
-  if (!newPassword) {
-    return res
-      .status(httpStatus.BAD_REQUEST)
-      .json({ message: 'New password is required!' });
-  }
-
-  // Check if the token exists in the database and is not expired
-  const resetToken = await prismaClient.resetToken.findFirst({
-    where: { token: token as string, expiresAt: { gt: new Date() } },
-  });
-
-  if (!resetToken) {
-    return res
-      .status(httpStatus.NOT_FOUND)
-      .json({ error: 'Invalid or expired token' });
-  }
-
-  // Update the user's password in the database
-  const hashedPassword = await argon2.hash(newPassword);
-  await prismaClient.user.update({
-    where: { id: resetToken.userId },
-    data: { password: hashedPassword },
-  });
-
-  // Delete the reset and all other reset tokens that the user owns from the database
-  await prismaClient.resetToken.deleteMany({
-    where: { userId: resetToken.userId },
-  });
-
-  // Return a success message
-  res.status(httpStatus.OK).json({ message: 'Password reset successful' });
-};
-
-/**
- * Sends Verification email
- * @param req
- * @param res
- * @returns
- */
-export const sendVerificationEmail = async (
-  req: TypedRequest<EmailRequestBody>,
-  res: Response
-) => {
-  const { email } = req.body;
-
-  if (!email) {
-    return res
-      .status(httpStatus.BAD_REQUEST)
-      .json({ message: 'Email is required!' });
-  }
-
-  // Check if the email exists in the database
-  const user = await prismaClient.user.findUnique({
-    where: { email },
-    select: { id: true, emailVerified: true },
-  });
-
-  if (!user) {
-    return res
-      .status(httpStatus.UNAUTHORIZED)
-      .json({ error: 'Email not found' });
-  }
-
-  // Check if the user's email is already verified
-  if (user.emailVerified) {
-    return res
-      .status(httpStatus.CONFLICT)
-      .json({ error: 'Email already verified' });
-  }
-
-  // Check if there is an existing verification token that has not expired
-  const existingToken = await prismaClient.emailVerificationToken.findFirst({
-    where: {
-      user: { id: user.id },
-      expiresAt: { gt: new Date() },
-    },
-  });
-
-  if (existingToken) {
-    return res
-      .status(httpStatus.BAD_REQUEST)
-      .json({ error: 'Verification email already sent' });
-  }
-
-  // Generate a new verification token and save it to the database
-  const token = uuidv4();
-  const expiresAt = new Date(Date.now() + 3600000); // Token expires in 1 hour
-  await prismaClient.emailVerificationToken.create({
-    data: {
-      token: token,
-      expiresAt: expiresAt,
-      userId: user.id,
-    },
-  });
-
-  // Send an email with the new verification link
-  sendVerifyEmail(email, token);
-
-  // Return a success message
-  res.status(httpStatus.OK).json({ message: 'Verification email sent' });
-};
-
-export const handleVerifyEmail = async (req: Request, res: Response) => {
-  const { token } = req.params;
-
-  if (!token) return res.sendStatus(httpStatus.NOT_FOUND);
-
-  // Check if the token exists in the database and is not expired
-  const verificationToken = await prisma?.emailVerificationToken.findUnique({
-    where: { token },
-  });
-
-  if (!verificationToken || verificationToken.expiresAt < new Date()) {
-    return res
-      .status(httpStatus.NOT_FOUND)
-      .json({ error: 'Invalid or expired token' });
-  }
-
-  // Update the user's email verification status in the database
-  await prismaClient.user.update({
-    where: { id: verificationToken.userId },
-    data: { emailVerified: new Date() },
-  });
-
-  // Delete the verification tokens that the user owns form the database
-  await prismaClient.emailVerificationToken.deleteMany({
-    where: { userId: verificationToken.userId },
-  });
-
-  // Return a success message
-  res.status(200).json({ message: 'Email verification successful' });
 };

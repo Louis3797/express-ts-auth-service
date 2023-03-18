@@ -1,12 +1,22 @@
 import { Router } from 'express';
-import * as authController from '../../controller/auth.controller';
+import validate from '../../middleware/validate';
+import {
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from '../../validations/password.validation';
+import * as passwordController from '../../controller/forgotPassword.controller';
 
 const passwordRouter = Router();
 
-passwordRouter.post('/forgot-password', authController.handleForgotPassword);
+passwordRouter.post(
+  '/forgot-password',
+  validate(forgotPasswordSchema),
+  passwordController.handleForgotPassword
+);
 passwordRouter.post(
   '/reset-password/:token',
-  authController.handleResetPassword
+  validate(resetPasswordSchema),
+  passwordController.handleResetPassword
 );
 
 export default passwordRouter;

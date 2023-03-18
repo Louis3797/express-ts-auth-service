@@ -5,13 +5,13 @@ import config from '../config/config';
 // @ts-ignore
 const { sign } = jwt;
 
-export const createAccessToken = (userId: number | string) => {
+export const createAccessToken = (userId: number | string): string => {
   return sign({ userID: userId }, config.access_token_secret, {
     expiresIn: config.access_token_expire,
   });
 };
 
-export const createRefreshToken = (userId: number | string) => {
+export const createRefreshToken = (userId: number | string): string => {
   return sign({ userId: userId }, config.refresh_token_secret, {
     expiresIn: config.refresh_token_expire,
   });
