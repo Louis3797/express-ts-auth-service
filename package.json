@@ -12,7 +12,7 @@
     "build": "tsc --project './tsconfig.json'",
     "start": "yarn run build && NODE_ENV=production node --trace-warnings ./dist/index.js",
     "watch": "tsc --project './tsconfig.json' --watch",
-    "lint": "eslint src/**/*.{ts,css,js,html}",
+    "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix --ext src/**/*.ts",
     "code:format": "prettier --write src/**/*.ts",
     "code:check": "prettier --check src/**/*.ts",
