@@ -18,6 +18,8 @@
     "code:check": "prettier --check src/**/*.ts",
     "code:format:specific-file": "prettier --write ",
     "test": "jest",
+    "test:watch": "jest -i --watchAll",
+    "coverage": "jest -i --coverage",
     "prepare": "husky install"
   },
   "dependencies": {
