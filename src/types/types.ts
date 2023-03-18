@@ -49,7 +49,7 @@ export type UserSignUpCredentials = {
 
 export type UserLoginCredentials = Omit<UserSignUpCredentials, 'username'>;
 
-export type ForgotPasswordRequestBodyType = {
+export type EmailRequestBody = {
   email: string;
 };
 
