@@ -41,6 +41,15 @@ describe('isAuth middleware', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
+  it('should return 401 if token is undefined', () => {
+    req.headers = { authorization: 'Bearer  ' };
+
+    isAuth(req, res, next);
+
+    expect(res.sendStatus).toHaveBeenCalledWith(httpStatus.UNAUTHORIZED);
+    expect(next).not.toHaveBeenCalled();
+  });
+
   it('should return 403 if token is invalid', () => {
     req.headers = { authorization: 'Bearer InvalidToken' };
 
@@ -52,12 +61,14 @@ describe('isAuth middleware', () => {
 
   it('should call next() if token is valid', () => {
     const payload: JwtPayload = { userId: '123' };
-    const token = sign(payload, config.access_token_secret);
+    const token = sign(payload, config.access_token_secret as string);
 
     req.headers = { authorization: `Bearer ${token}` };
 
     isAuth(req, res, next);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     expect(req.payload).toBeDefined();
     expect(next).toHaveBeenCalled();
   });
