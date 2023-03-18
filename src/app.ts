@@ -7,6 +7,9 @@ import compressFilter from './utils/compressFilter.util';
 // import config from './config/config';
 import { authRouter, passwordRouter, verifyEmailRouter } from './routes/v1';
 import isAuth from './middleware/isAuth';
+import { errorHandler } from './middleware/errorHandler';
+import config from './config/config';
+import authLimiter from './middleware/authLimiter';
 
 const app: Express = express();
 
@@ -32,7 +35,9 @@ app.use(
   })
 );
 
-// Todo -> rate limiting auth routes ??
+if (config.node_env === 'production') {
+  app.use('/v1/auth', authLimiter);
+}
 
 app.use('/api/v1/auth', authRouter);
 
@@ -46,6 +51,6 @@ app.use('/secret', isAuth, (_req, res) => {
   });
 });
 
-// Todo -> Error handling
+app.use(errorHandler);
 
 export default app;
