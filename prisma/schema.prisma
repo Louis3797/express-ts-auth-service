@@ -30,25 +30,33 @@ model Account {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String
-  email         String?        @unique
-  password      String
-  emailVerified DateTime?
-  accounts      Account[]
-  refreshTokens RefreshToken[]
-  resetToken    ResetToken[]
+  id                     String                   @id @default(cuid())
+  name                   String
+  email                  String?                  @unique
+  password               String
+  emailVerified          DateTime?
+  accounts               Account[]
+  refreshTokens          RefreshToken[]
+  resetToken             ResetToken[]
+  emailVerificationToken EmailVerificationToken[]
 }
 
 model RefreshToken {
   token  String @id
-  User   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
   userId String
 }
 
 model ResetToken {
   token     String   @id
   expiresAt DateTime
-  User      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model EmailVerificationToken {
+  token     String   @id
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
 }
