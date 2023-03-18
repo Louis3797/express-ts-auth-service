@@ -10,7 +10,7 @@ services:
       - mysql
       - redis
     env_file:
-      - ./env
+      - ./.env
     ports:
       - "4040:4040"
 
@@ -23,16 +23,16 @@ services:
       - ./data/db:/var/lib/mysql
     restart: always
     ports:
-      - "3306:3306"
+      - "3307:3307"
     env_file:
-      - ./env
+      - ./.env
 
 
   # Redis Database
-  redis:
-    image: redis:alpine
-    container_name: redis
-    volumes:
-      - ./data/db:/var/lib/redis
-    ports:
-      - "6379:6379"
+  # redis:
+  #   image: redis:alpine
+  #   container_name: redis
+  #   volumes:
+  #     - ./data/db:/var/lib/redis
+  #   ports:
+  #     - "6379:6379"
