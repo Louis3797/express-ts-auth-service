@@ -61,7 +61,7 @@ describe('isAuth middleware', () => {
 
   it('should call next() if token is valid', () => {
     const payload: JwtPayload = { userId: '123' };
-    const token = sign(payload, config.access_token_secret as string);
+    const token = sign(payload, config.jwt.access_token.secret as string);
 
     req.headers = { authorization: `Bearer ${token}` };
 
