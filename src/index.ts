@@ -8,9 +8,9 @@ const server = app.listen(parseInt(config.server.port), () => {
 
 process.on('SIGTERM', () => {
   logger.info('SIGTERM signal received.');
-  logger.info('Closing http server.');
+  logger.info('Closing server.');
   server.close((err) => {
-    logger.info('Http server closed.');
+    logger.info('Server closed.');
     process.exit(err ? 1 : 0);
   });
 });
