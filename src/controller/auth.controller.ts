@@ -67,6 +67,7 @@ export const handleSingUp = async (
 
     const token = uuidv4();
     const expiresAt = new Date(Date.now() + 3600000); // Token expires in 1 hour
+
     await prismaClient.emailVerificationToken.create({
       data: {
         token: token,
@@ -154,7 +155,7 @@ export const handleLogin = async (
 
         // also clear the refresh token in the cookie
         res.clearCookie(
-          config.refresh_token_cookie_name,
+          config.jwt.refresh_token.cookie_name,
           clearRefreshTokenCookieConfig
         );
       }
@@ -175,7 +176,7 @@ export const handleLogin = async (
 
       // save refresh token in cookie
       res.cookie(
-        config.refresh_token_cookie_name,
+        config.jwt.refresh_token.cookie_name,
         newRefreshToken,
         refreshTokenCookieConfig
       );
@@ -209,7 +210,7 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
 
   if (!foundRft) {
     res.clearCookie(
-      config.refresh_token_cookie_name,
+      config.jwt.refresh_token.cookie_name,
       clearRefreshTokenCookieConfig
     );
     return res.sendStatus(httpStatus.NO_CONTENT);
@@ -221,7 +222,7 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
   });
 
   res.clearCookie(
-    config.refresh_token_cookie_name,
+    config.jwt.refresh_token.cookie_name,
     clearRefreshTokenCookieConfig
   );
   res.sendStatus(httpStatus.NO_CONTENT);
@@ -235,7 +236,7 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
  */
 export const handleRefresh = async (req: Request, res: Response) => {
   const token: string | undefined =
-    req.cookies[config.refresh_token_cookie_name];
+    req.cookies[config.jwt.refresh_token.cookie_name];
 
   if (!token) return res.sendStatus(httpStatus.UNAUTHORIZED);
 
@@ -243,7 +244,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
 
   // clear refresh cookie
   res.clearCookie(
-    config.refresh_token_cookie_name,
+    config.jwt.refresh_token.cookie_name,
     clearRefreshTokenCookieConfig
   );
   // check if refresh token is in db
@@ -305,7 +306,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
 
       // Creates Secure Cookie with refresh token
       res.cookie(
-        config.refresh_token_cookie_name,
+        config.jwt.refresh_token.cookie_name,
         newRefreshToken,
         refreshTokenCookieConfig
       );

@@ -7,19 +7,35 @@ dotenv.config({
 
 const config = {
   node_env: process.env.NODE_ENV,
-  port: process.env.PORT,
-  server_url: process.env.SERVER_URL,
-  cors_origin: process.env.CORS_ORIGIN,
-  access_token_secret: process.env.ACCESS_TOKEN_SECRET,
-  access_token_expire: process.env.ACCESS_TOKEN_EXPIRE,
-  refresh_token_secret: process.env.REFRESH_TOKEN_SECRET,
-  refresh_token_expire: process.env.REFRESH_TOKEN_EXPIRE,
-  refresh_token_cookie_name: process.env.REFRESH_TOKEN_COOKIE_NAME,
-  smtp_host: process.env.SMTP_HOST,
-  smtp_port: process.env.SMTP_PORT,
-  smtp_username: process.env.SMTP_USERNAME,
-  smtp_password: process.env.SMTP_PASSWORD,
-  email_from: process.env.EMAIL_FROM,
+  server: {
+    port: process.env.PORT,
+    url: process.env.SERVER_URL,
+  },
+  cors: {
+    cors_origin: process.env.CORS_ORIGIN,
+  },
+  jwt: {
+    access_token: {
+      secret: process.env.ACCESS_TOKEN_SECRET,
+      expire: process.env.ACCESS_TOKEN_EXPIRE,
+    },
+    refresh_token: {
+      secret: process.env.REFRESH_TOKEN_SECRET,
+      expire: process.env.REFRESH_TOKEN_EXPIRE,
+      cookie_name: process.env.REFRESH_TOKEN_COOKIE_NAME,
+    },
+  },
+  email: {
+    smtp: {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      auth: {
+        username: process.env.SMTP_USERNAME,
+        password: process.env.SMTP_PASSWORD,
+      },
+    },
+    from: process.env.EMAIL_FROM,
+  },
 } as const;
 
 export default config;

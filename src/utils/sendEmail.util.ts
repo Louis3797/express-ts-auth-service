@@ -3,9 +3,9 @@ import transporter from '../config/nodemailer';
 import config from '../config/config';
 
 export const sendResetEmail = (email: string, token: string) => {
-  const resetLink = `${config.server_url}/api/v1/reset-password/${token}`;
+  const resetLink = `${config.server.url}/api/v1/reset-password/${token}`;
   const mailOptions = {
-    from: config.email_from,
+    from: config.email.from,
     to: email,
     subject: 'Password reset',
     html: `Please click <a href="${resetLink}">here</a> to reset your password.`,
@@ -20,9 +20,9 @@ export const sendResetEmail = (email: string, token: string) => {
 };
 
 export const sendVerifyEmail = (email: string, token: string) => {
-  const verifyLink = `${config.server_url}/api/v1/verify-email/${token}`;
+  const verifyLink = `${config.server.url}/api/v1/verify-email/${token}`;
   const mailOptions = {
-    from: config.email_from,
+    from: config.email.from,
     to: email,
     subject: 'Email verification',
     html: `Please click <a href="${verifyLink}">here</a> to verify your email.`,
