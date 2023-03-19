@@ -1,7 +1,7 @@
 {
   "name": "express-ts-auth-service",
   "version": "1.0.0",
-  "description": "A ready to use auth service that uses jwt authentication and refresh token rotation",
+  "description": "A ready-to-use authentication service build with express.js, that provides secure and reliable authentication using JSON Web Tokens (JWT) and refresh token rotation",
   "author": "Louis-Kaan Ay",
   "license": "MIT",
   "private": false,

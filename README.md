@@ -8,7 +8,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 -->
 <div align="center">
 
-  <h1>Express-Typescript-Boilerplate</h1>
+  <h1>Express-Ts-Auth-Service</h1>
   
   <p>
     A simple Express.js boilerplate server with typescript
@@ -52,20 +52,21 @@ Maybe you can mention me or this repo in the acknowledgements too
 
 # Table of Contents
 
-- [About the Project](#about-the-project)
-  - [Tech Stack](#tech-stack)
-  - [Features](#features)
-  - [Environment Variables](#environment-variables)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Linting](#linting)
-  - [Running Tests](#running-tests)
-  - [Run Locally](#run-locally)
-  - [Run with Docker](#run-with-docker)
-- [License](#license)
-- [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
+- [Table of Contents](#table-of-contents)
+  - [About the Project](#about-the-project)
+    - [Tech Stack](#tech-stack)
+    - [Features](#features)
+    - [Environment Variables](#environment-variables)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Linting](#linting)
+    - [Running Tests](#running-tests)
+    - [Run Locally](#run-locally)
+    - [Run with Docker](#run-with-docker)
+  - [License](#license)
+  - [Contact](#contact)
+  - [Acknowledgements](#acknowledgements)
 
 <!-- About the Project -->
 
