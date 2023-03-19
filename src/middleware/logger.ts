@@ -5,7 +5,7 @@ const logger = createLogger({
   level: config.node_env === 'production' ? 'info' : 'debug',
   format: format.combine(
     format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss',
+      format: 'YYYY-MM-DD HH:mm:ss'
     }),
     format.errors({ stack: true }),
     format.splat(),
@@ -18,13 +18,13 @@ const logger = createLogger({
   ),
   transports: [
     new transports.Console({
-      stderrLevels: ['error'],
+      stderrLevels: ['error']
     }),
     new transports.File({
       filename: 'logs/error.log',
-      level: 'error',
+      level: 'error'
     }),
-    new transports.File({ filename: 'logs/combined.log' }),
-  ],
+    new transports.File({ filename: 'logs/combined.log' })
+  ]
 });
 export default logger;

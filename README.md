@@ -1,6 +1,6 @@
 <!--
-Hey, thanks for using the awesome-readme-template template.  
-If you have any enhancements, then fork this project and create a pull request 
+Hey, thanks for using the awesome-readme-template template.
+If you have any enhancements, then fork this project and create a pull request
 or just open an issue with the label "enhancement".
 
 Don't forget to give this project a star for additional support ;)
@@ -49,51 +49,53 @@ Maybe you can mention me or this repo in the acknowledgements too
 <br />
 
 <!-- Table of Contents -->
+
 # Table of Contents
 
 - [About the Project](#about-the-project)
-  * [Tech Stack](#tech-stack)
-  * [Features](#features)
-  * [Environment Variables](#environment-variables)
+  - [Tech Stack](#tech-stack)
+  - [Features](#features)
+  - [Environment Variables](#environment-variables)
 - [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-  * [Linting](#linting)
-  * [Running Tests](#running-tests)
-  * [Run Locally](#run-locally)
-  * [Run with Docker](#run-with-docker)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Linting](#linting)
+  - [Running Tests](#running-tests)
+  - [Run Locally](#run-locally)
+  - [Run with Docker](#run-with-docker)
 - [License](#license)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
-  
 
 <!-- About the Project -->
+
 ## About the Project
 
 <!-- TechStack -->
+
 ### Tech Stack
 
-- ***Express.js***
-- ***Typescript***
-- ***Yarn***
-
+- **_Express.js_**
+- **_Typescript_**
+- **_Yarn_**
 
 <!-- Features -->
+
 ### Features
 
-- ***Package managament*** with Yarn
-- ***Testing*** with Jest and Supertest
-- ***Cross-Origin Resource-Sharing*** enabled using cors
-- ***Secured HTTP Headers*** using helmet
-- ***Logging*** with winston
-- ***Environment variables*** using dotenv
-- ***Compression*** with gzip
-- ***Git hooks*** with husky and lint-staged
-- ***Linting and enforced code style*** using Eslint and Prettier
-- ***Containerization*** with Docker
-
+- **_Package managament_** with Yarn
+- **_Testing_** with Jest and Supertest
+- **_Cross-Origin Resource-Sharing_** enabled using cors
+- **_Secured HTTP Headers_** using helmet
+- **_Logging_** with winston
+- **_Environment variables_** using dotenv
+- **_Compression_** with gzip
+- **_Git hooks_** with husky and lint-staged
+- **_Linting and enforced code style_** using Eslint and Prettier
+- **_Containerization_** with Docker
 
 <!-- Env Variables -->
+
 ### Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
@@ -107,9 +109,11 @@ To run this project, you will need to add the following environment variables to
 See .env.example for further details
 
 <!-- Getting Started -->
+
 ## Getting Started
 
 <!-- Prerequisites -->
+
 ### Prerequisites
 
 This project uses Yarn as package manager
@@ -119,6 +123,7 @@ This project uses Yarn as package manager
 ```
 
 <!-- Installation -->
+
 ### Installation
 
 ```bash
@@ -140,7 +145,7 @@ Go to the project directory
 ```bash
   # run ESLint
   yarn lint
-  
+
   # fix ESLint errors
   yarn lint:fix
 
@@ -149,12 +154,13 @@ Go to the project directory
 
   # fix prettier errors
   yarn code:format
-  
+
   # fix prettier errors in specific file
   yarn code:format:specific-file <file-name>
 ```
-   
+
 <!-- Running Tests -->
+
 ### Running Tests
 
 To run tests, run the following command
@@ -164,6 +170,7 @@ To run tests, run the following command
 ```
 
 <!-- Run Locally -->
+
 ### Run Locally
 
 Start the server in development mode
@@ -179,37 +186,38 @@ Start the server in production mode
 ```
 
 <!-- Run with Docker -->
+
 ### Run with Docker
 
 Build the container
 
 ```bash
   cd express-ts-boilerplate
-  docker build . -t express-ts-boilerplate     
+  docker build . -t express-ts-boilerplate
 ```
 
 Start the container
 
 ```bash
-  docker run -p <port you want the container to run at>:4040 -d express-ts-boilerplate    
+  docker run -p <port you want the container to run at>:4040 -d express-ts-boilerplate
 ```
 
-
 <!-- License -->
+
 ## License
 
 Distributed under the MIT License. See LICENSE.txt for more information.
 
-
 <!-- Contact -->
+
 ## Contact
 
 Louis-Kaan Ay
 
 Project Link: [https://github.com/Louis3797/express-ts-boilerplate](https://github.com/Louis3797/express-ts-boilerplate)
 
-
 <!-- Acknowledgments -->
+
 ## Acknowledgements
 
- - [Readme Template](https://github.com/Louis3797/awesome-readme-template)
+- [Readme Template](https://github.com/Louis3797/awesome-readme-template)

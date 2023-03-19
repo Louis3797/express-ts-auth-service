@@ -2,29 +2,29 @@ import type { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { v4 as uuidv4 } from 'uuid';
 import * as argon2 from 'argon2';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
 import prismaClient from '../config/prisma';
 import type {
   TypedRequest,
   UserLoginCredentials,
-  UserSignUpCredentials,
+  UserSignUpCredentials
 } from '../types/types';
 import {
   createAccessToken,
-  createRefreshToken,
+  createRefreshToken
 } from '../utils/generateTokens.util';
 import config from '../config/config';
 
 import {
   clearRefreshTokenCookieConfig,
-  refreshTokenCookieConfig,
+  refreshTokenCookieConfig
 } from '../config/cookieConfig';
 
 import { sendVerifyEmail } from '../utils/sendEmail.util';
 import logger from '../middleware/logger';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error
 const { verify } = jwt;
 
 /**
@@ -42,27 +42,27 @@ export const handleSingUp = async (
   // check req.body values
   if (!username || !email || !password) {
     return res.status(httpStatus.BAD_REQUEST).json({
-      message: 'Username, email and password are required!',
+      message: 'Username, email and password are required!'
     });
   }
 
   const checkUserEmail = await prismaClient.user.findUnique({
     where: {
-      email: email,
-    },
+      email
+    }
   });
 
   if (checkUserEmail) return res.sendStatus(httpStatus.CONFLICT); // email is already in db
 
   try {
-    const hashedPassword = await argon2.hash(password as string);
+    const hashedPassword = await argon2.hash(password);
 
     const newUser = await prismaClient.user.create({
       data: {
         name: username,
-        email: email,
-        password: hashedPassword,
-      },
+        email,
+        password: hashedPassword
+      }
     });
 
     const token = uuidv4();
@@ -70,10 +70,10 @@ export const handleSingUp = async (
 
     await prismaClient.emailVerificationToken.create({
       data: {
-        token: token,
-        expiresAt: expiresAt,
-        userId: newUser.id,
-      },
+        token,
+        expiresAt,
+        userId: newUser.id
+      }
     });
 
     // Send an email with the verification link
@@ -107,8 +107,8 @@ export const handleLogin = async (
 
   const user = await prismaClient.user.findUnique({
     where: {
-      email: email,
-    },
+      email
+    }
   });
 
   if (!user) return res.sendStatus(httpStatus.UNAUTHORIZED);
@@ -116,7 +116,7 @@ export const handleLogin = async (
   // check if email is verified
   if (!user.emailVerified) {
     res.send(httpStatus.UNAUTHORIZED).json({
-      message: 'Your email is not verified! Please confirm your email!',
+      message: 'Your email is not verified! Please confirm your email!'
     });
   }
 
@@ -132,24 +132,24 @@ export const handleLogin = async (
         // check if the given refresh token is from the current user
         const checkRefreshToken = await prismaClient.refreshToken.findUnique({
           where: {
-            token: cookies.jid,
-          },
+            token: cookies.jid
+          }
         });
 
         // if this token does not exists int the database or belongs to another user,
         // then we clear all refresh tokens from the user in the db
-        if (!checkRefreshToken || checkRefreshToken.userId != user.id) {
+        if (!checkRefreshToken || checkRefreshToken.userId !== user.id) {
           await prismaClient.refreshToken.deleteMany({
             where: {
-              userId: user.id,
-            },
+              userId: user.id
+            }
           });
         } else {
           // else everything is fine and we just need to delete the one token
           await prismaClient.refreshToken.delete({
             where: {
-              token: cookies.jid,
-            },
+              token: cookies.jid
+            }
           });
         }
 
@@ -168,8 +168,8 @@ export const handleLogin = async (
       const dbRefreshToken = await prismaClient.refreshToken.create({
         data: {
           token: newRefreshToken,
-          userId: user.id,
-        },
+          userId: user.id
+        }
       });
 
       console.log(dbRefreshToken);
@@ -200,12 +200,12 @@ export const handleLogin = async (
 export const handleLogout = async (req: TypedRequest, res: Response) => {
   const cookies = req.cookies;
 
-  if (!cookies?.jid) return res.sendStatus(httpStatus.NO_CONTENT); //No content
+  if (!cookies?.jid) return res.sendStatus(httpStatus.NO_CONTENT); // No content
   const refreshToken = cookies.jid;
 
   // Is refreshToken in db?
   const foundRft = await prismaClient.refreshToken.findUnique({
-    where: { token: refreshToken },
+    where: { token: refreshToken }
   });
 
   if (!foundRft) {
@@ -218,7 +218,7 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
 
   // Delete refreshToken in db
   await prismaClient.refreshToken.delete({
-    where: { token: refreshToken },
+    where: { token: refreshToken }
   });
 
   res.clearCookie(
@@ -250,8 +250,8 @@ export const handleRefresh = async (req: Request, res: Response) => {
   // check if refresh token is in db
   const foundRefreshToken = await prismaClient.refreshToken.findUnique({
     where: {
-      token: refreshToken,
-    },
+      token: refreshToken
+    }
   });
 
   // Detected refresh token reuse!
@@ -264,8 +264,8 @@ export const handleRefresh = async (req: Request, res: Response) => {
         logger.warn('attempted refresh token reuse!');
         await prismaClient.refreshToken.deleteMany({
           where: {
-            userId: payload.userId,
-          },
+            userId: payload.userId
+          }
         });
       }
     );
@@ -275,8 +275,8 @@ export const handleRefresh = async (req: Request, res: Response) => {
   // delete from db
   await prismaClient.refreshToken.delete({
     where: {
-      token: refreshToken,
-    },
+      token: refreshToken
+    }
   });
 
   // evaluate jwt
@@ -284,8 +284,9 @@ export const handleRefresh = async (req: Request, res: Response) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err: unknown, payload: JwtPayload) => {
-      if (err || foundRefreshToken.userId !== payload.userId)
+      if (err || foundRefreshToken.userId !== payload.userId) {
         return res.sendStatus(httpStatus.FORBIDDEN);
+      }
 
       // Refresh token was still valid
       const accessToken = createAccessToken(payload.userId);
@@ -297,8 +298,8 @@ export const handleRefresh = async (req: Request, res: Response) => {
         .create({
           data: {
             token: newRefreshToken,
-            userId: payload.userId,
-          },
+            userId: payload.userId
+          }
         })
         .catch((err) => {
           logger.error(err);

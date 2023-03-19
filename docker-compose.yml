@@ -12,8 +12,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "4040:4040"
-
+      - '4040:4040'
 
   # MySQL Database
   mysql:
@@ -23,10 +22,9 @@ services:
       - ./data/db:/var/lib/mysql
     restart: always
     ports:
-      - "3307:3307"
+      - '3307:3307'
     env_file:
       - ./.env
-
 
   # Redis Database
   # redis:

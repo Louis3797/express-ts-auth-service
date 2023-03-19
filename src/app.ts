@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { type Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -31,7 +31,7 @@ app.use(
     // origin is given a array if we want to have multiple origins later
     // origin: [config.cors_origin],
     origin: '*',
-    credentials: true,
+    credentials: true
   })
 );
 
@@ -47,7 +47,7 @@ app.use('/api/v1', verifyEmailRouter);
 
 app.use('/secret', isAuth, (_req, res) => {
   res.json({
-    message: 'You can see me',
+    message: 'You can see me'
   });
 });
 

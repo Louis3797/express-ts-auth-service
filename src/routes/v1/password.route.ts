@@ -2,7 +2,7 @@ import { Router } from 'express';
 import validate from '../../middleware/validate';
 import {
   forgotPasswordSchema,
-  resetPasswordSchema,
+  resetPasswordSchema
 } from '../../validations/password.validation';
 import * as passwordController from '../../controller/forgotPassword.controller';
 

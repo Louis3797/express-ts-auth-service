@@ -6,7 +6,7 @@ import prismaClient from '../config/prisma';
 import type {
   TypedRequest,
   EmailRequestBody,
-  ResetPasswordRequestBodyType,
+  ResetPasswordRequestBodyType
 } from '../types/types';
 import { sendResetEmail } from '../utils/sendEmail.util';
 
@@ -25,7 +25,7 @@ export const handleForgotPassword = async (
   // check req.body values
   if (!email) {
     return res.status(httpStatus.BAD_REQUEST).json({
-      message: 'Email is required!',
+      message: 'Email is required!'
     });
   }
 
@@ -38,7 +38,7 @@ export const handleForgotPassword = async (
   // check if email is verified
   if (!user.emailVerified) {
     res.send(httpStatus.UNAUTHORIZED).json({
-      message: 'Your email is not verified! Please confirm your email!',
+      message: 'Your email is not verified! Please confirm your email!'
     });
   }
 
@@ -48,9 +48,9 @@ export const handleForgotPassword = async (
   await prismaClient.resetToken.create({
     data: {
       token: resetToken,
-      expiresAt: expiresAt,
-      userId: user.id,
-    },
+      expiresAt,
+      userId: user.id
+    }
   });
 
   // Send an email with the reset link
@@ -83,7 +83,7 @@ export const handleResetPassword = async (
 
   // Check if the token exists in the database and is not expired
   const resetToken = await prismaClient.resetToken.findFirst({
-    where: { token: token, expiresAt: { gt: new Date() } },
+    where: { token, expiresAt: { gt: new Date() } }
   });
 
   if (!resetToken) {
@@ -96,19 +96,19 @@ export const handleResetPassword = async (
   const hashedPassword = await argon2.hash(newPassword);
   await prismaClient.user.update({
     where: { id: resetToken.userId },
-    data: { password: hashedPassword },
+    data: { password: hashedPassword }
   });
 
   // Delete the reset and all other reset tokens that the user owns from the database
   await prismaClient.resetToken.deleteMany({
-    where: { userId: resetToken.userId },
+    where: { userId: resetToken.userId }
   });
 
   // Delete also all refresh tokens
   await prismaClient.refreshToken.deleteMany({
     where: {
-      userId: resetToken.userId,
-    },
+      userId: resetToken.userId
+    }
   });
 
   // Return a success message

@@ -13,7 +13,7 @@ export const errorHandler = (
 ): void => {
   const error: ErrorResponse = {
     status: err.status || 500,
-    message: err.message || 'Internal Server Error',
+    message: err.message || 'Internal Server Error'
   };
 
   logger.error(err);

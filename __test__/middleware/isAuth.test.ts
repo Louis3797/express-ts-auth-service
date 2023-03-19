@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import type { Request, Response, NextFunction } from 'express';
 import isAuth from '../../src/middleware/isAuth';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
 import config from '../../src/config/config';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error
 const { sign } = jwt;
 
 describe('isAuth middleware', () => {
@@ -16,7 +16,7 @@ describe('isAuth middleware', () => {
   beforeEach(() => {
     req = {} as Request;
     res = {
-      sendStatus: jest.fn(),
+      sendStatus: jest.fn()
     } as unknown as Response;
     next = jest.fn();
   });
@@ -61,13 +61,13 @@ describe('isAuth middleware', () => {
 
   it('should call next() if token is valid', () => {
     const payload: JwtPayload = { userId: '123' };
-    const token = sign(payload, config.jwt.access_token.secret as string);
+    const token = sign(payload, config.jwt.access_token.secret);
 
     req.headers = { authorization: `Bearer ${token}` };
 
     isAuth(req, res, next);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
     // @ts-ignore
     expect(req.payload).toBeDefined();
     expect(next).toHaveBeenCalled();

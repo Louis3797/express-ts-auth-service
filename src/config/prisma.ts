@@ -5,7 +5,10 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-const prismaClient = globalThis.prisma || new PrismaClient();
+const prismaClient: PrismaClient = new PrismaClient();
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
+// @ts-ignore
 if (process.env.NODE_ENV !== 'production') globalThis.prisma = prismaClient;
 
 export default prismaClient;

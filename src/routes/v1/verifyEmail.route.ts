@@ -2,7 +2,7 @@ import { Router } from 'express';
 import validate from '../../middleware/validate';
 import {
   sendVerifyEmailSchema,
-  verifyEmailSchema,
+  verifyEmailSchema
 } from '../../validations/verifyEmail.validation';
 import * as emailController from '../../controller/verifyEmail.controller';
 

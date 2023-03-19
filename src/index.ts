@@ -11,6 +11,7 @@ process.on('SIGTERM', () => {
   logger.info('Closing server.');
   server.close((err) => {
     logger.info('Server closed.');
+    // eslint-disable-next-line no-process-exit
     process.exit(err ? 1 : 0);
   });
 });

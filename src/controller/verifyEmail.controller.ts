@@ -26,7 +26,7 @@ export const sendVerificationEmail = async (
   // Check if the email exists in the database
   const user = await prismaClient.user.findUnique({
     where: { email },
-    select: { id: true, emailVerified: true },
+    select: { id: true, emailVerified: true }
   });
 
   if (!user) {
@@ -46,8 +46,8 @@ export const sendVerificationEmail = async (
   const existingToken = await prismaClient.emailVerificationToken.findFirst({
     where: {
       user: { id: user.id },
-      expiresAt: { gt: new Date() },
-    },
+      expiresAt: { gt: new Date() }
+    }
   });
 
   if (existingToken) {
@@ -61,10 +61,10 @@ export const sendVerificationEmail = async (
   const expiresAt = new Date(Date.now() + 3600000); // Token expires in 1 hour
   await prismaClient.emailVerificationToken.create({
     data: {
-      token: token,
-      expiresAt: expiresAt,
-      userId: user.id,
-    },
+      token,
+      expiresAt,
+      userId: user.id
+    }
   });
 
   // Send an email with the new verification link
@@ -81,7 +81,7 @@ export const handleVerifyEmail = async (req: Request, res: Response) => {
 
   // Check if the token exists in the database and is not expired
   const verificationToken = await prisma?.emailVerificationToken.findUnique({
-    where: { token },
+    where: { token }
   });
 
   if (!verificationToken || verificationToken.expiresAt < new Date()) {
@@ -93,12 +93,12 @@ export const handleVerifyEmail = async (req: Request, res: Response) => {
   // Update the user's email verification status in the database
   await prismaClient.user.update({
     where: { id: verificationToken.userId },
-    data: { emailVerified: new Date() },
+    data: { emailVerified: new Date() }
   });
 
   // Delete the verification tokens that the user owns form the database
   await prismaClient.emailVerificationToken.deleteMany({
-    where: { userId: verificationToken.userId },
+    where: { userId: verificationToken.userId }
   });
 
   // Return a success message

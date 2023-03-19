@@ -1,4 +1,4 @@
-import nodemailer, { Transporter } from 'nodemailer';
+import nodemailer, { type Transporter } from 'nodemailer';
 import config from './config';
 
 let transporter: Transporter;
@@ -10,8 +10,8 @@ if (config.node_env === 'production') {
     secure: false, // true for 465, false for other ports
     auth: {
       user: config.email.smtp.auth.username,
-      pass: config.email.smtp.auth.password,
-    },
+      pass: config.email.smtp.auth.password
+    }
   });
 } else {
   // !! test account can expire
@@ -21,8 +21,8 @@ if (config.node_env === 'production') {
     secure: false, // true for 465, false for other ports
     auth: {
       user: 'i5w45aectlp3hdta@ethereal.email', // generated ethereal user
-      pass: 'wkb7KbnCWKxBu2ktvR', // generated ethereal password
-    },
+      pass: 'wkb7KbnCWKxBu2ktvR' // generated ethereal password
+    }
   });
 }
 
