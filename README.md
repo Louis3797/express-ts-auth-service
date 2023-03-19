@@ -11,42 +11,41 @@ Maybe you can mention me or this repo in the acknowledgements too
   <h1>Express-Ts-Auth-Service</h1>
   
   <p>
-    A simple Express.js boilerplate server with typescript
+A pre-built authentication server that uses JSON Web Tokens (JWT) for authentication. It is built using Express.js, TypeScript and MySQL
   </p>
   
   
 <!-- Badges -->
 <p>
-  <a href="https://github.com/Louis3797/awesome-readme-template/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/Louis3797/awesome-readme-template" alt="contributors" />
+  <a href="https://github.com/Louis3797/express-ts-auth-service/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/Louis3797/express-ts-auth-service" alt="contributors" />
   </a>
   <a href="">
-    <img src="https://img.shields.io/github/last-commit/Louis3797/express-ts-boilerplate" alt="last update" />
+    <img src="https://img.shields.io/github/last-commit/Louis3797/express-ts-auth-service" alt="last update" />
   </a>
-  <a href="https://github.com/Louis3797/express-ts-boilerplate/network/members">
-    <img src="https://img.shields.io/github/forks/Louis3797/express-ts-boilerplate" alt="forks" />
+  <a href="https://github.com/Louis3797/express-ts-auth-service/network/members">
+    <img src="https://img.shields.io/github/forks/Louis3797/express-ts-auth-service" alt="forks" />
   </a>
-  <a href="https://github.com/Louis3797/awesome-readme-template/stargazers">
-    <img src="https://img.shields.io/github/stars/Louis3797/express-ts-boilerplate" alt="stars" />
+  <a href="https://github.com/Louis3797/express-ts-auth-service/stargazers">
+    <img src="https://img.shields.io/github/stars/Louis3797/express-ts-auth-service" alt="stars" />
   </a>
-  <a href="https://github.com/Louis3797/express-ts-boilerplate/issues/">
-    <img src="https://img.shields.io/github/issues/Louis3797/express-ts-boilerplate" alt="open issues" />
+  <a href="https://github.com/Louis3797/express-ts-auth-service/issues/">
+    <img src="https://img.shields.io/github/issues/Louis3797/express-ts-auth-service" alt="open issues" />
   </a>
-  <a href="https://github.com/Louis3797/express-ts-boilerplate/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/Louis3797/express-ts-boilerplate.svg" alt="license" />
+  <a href="https://github.com/Louis3797/express-ts-auth-service/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/Louis3797/express-ts-auth-service.svg" alt="license" />
   </a>
 </p>
    
 <h4>
-    <a href="https://github.com/Louis3797/express-ts-boilerplate">Documentation</a>
+    <a href="https://github.com/Louis3797/express-ts-auth-service#readme">Documentation</a>
   <span> · </span>
-    <a href="https://github.com/Louis3797/express-ts-boilerplate/issues/">Report Bug</a>
+    <a href="https://github.com/Louis3797/express-ts-auth-service/issues/">Report Bug</a>
   <span> · </span>
-    <a href="https://github.com/Louis3797/express-ts-boilerplate/issues/">Request Feature</a>
+    <a href="https://github.com/Louis3797/express-ts-auth-service/issues/">Request Feature</a>
   </h4>
 </div>
 
-<br />
 
 <!-- Table of Contents -->
 
@@ -56,6 +55,10 @@ Maybe you can mention me or this repo in the acknowledgements too
   - [About the Project](#about-the-project)
     - [Tech Stack](#tech-stack)
     - [Features](#features)
+    - [Endpoints](#endpoints)
+    - [Project Structure](#project-structure)
+    - [Database](#database)
+    - [Refresh Token Rotation](#refresh-token-rotation)
     - [Environment Variables](#environment-variables)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
@@ -64,6 +67,9 @@ Maybe you can mention me or this repo in the acknowledgements too
     - [Running Tests](#running-tests)
     - [Run Locally](#run-locally)
     - [Run with Docker](#run-with-docker)
+  - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+    - [Code of Conduct](#code-of-conduct)
   - [License](#license)
   - [Contact](#contact)
   - [Acknowledgements](#acknowledgements)
@@ -72,28 +78,210 @@ Maybe you can mention me or this repo in the acknowledgements too
 
 ## About the Project
 
+This pre-built authentication server is designed to simplify the process of adding secure user authentication to your web or mobile application. It provides a ready-made solution that uses JSON Web Tokens (JWT) to ensure reliable and secure user sessions, saving you time and resources that would otherwise be required to develop an authentication system from scratch. Built using Express.js and TypeScript, this server is also highly customizable and can be extended to meet the specific needs of your application. By integrating our authentication server into your application, you can rest assured that your users' data and sessions are well protected, leaving you free to focus on other important aspects of your application.
+
 <!-- TechStack -->
 
 ### Tech Stack
 
-- **_Express.js_**
-- **_Typescript_**
-- **_Yarn_**
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=ts,nodejs,express,mysql,docker,prisma&perline=13" />
+  </a>
+</p>
 
 <!-- Features -->
 
 ### Features
 
-- **_Package managament_** with Yarn
-- **_Testing_** with Jest and Supertest
-- **_Cross-Origin Resource-Sharing_** enabled using cors
-- **_Secured HTTP Headers_** using helmet
-- **_Logging_** with winston
-- **_Environment variables_** using dotenv
-- **_Compression_** with gzip
-- **_Git hooks_** with husky and lint-staged
-- **_Linting and enforced code style_** using Eslint and Prettier
-- **_Containerization_** with Docker
+- :black_nib: Written in TypeScript for type-safe code
+- :floppy_disk: Utilize a MySQL database to efficiently store user data
+- :speaking_head: Interacts with the database using the powerful Prisma ORM
+- :lock: Implements secure authentication measures with JWTs, ensuring secure access to sensitive data
+- :key: Implements robust password hashing using Argon2 for maximum security
+- :recycle: Incorporates refresh token rotation functionality to enhance the security
+- :white_check_mark: Includes email verification functionality for new user sign-ups
+- :new: Provides a reset password function for users who have forgotten their password
+- :rabbit2: Enables faster data transfer by implementing GZIP compression
+- :policeman: Implements essential security features using Helmet middleware
+- :cookie: Parses cookies seamlessly with cookie-parser middleware
+- :gear: Allows cross-origin resource sharing using CORS
+- :capital_abcd: Manages environment variables with ease using dotenv
+- :male_detective: Enforces high code quality standards with ESLint and Prettier
+- :horse_racing: Implements rate limiting to prevent abuse and improve server performance
+- :information_source: Accurately manages HTTP response status codes using http-status library
+- :warning: Validates user input with the powerful and flexible Joi library
+- :email: Facilitates sending of emails using nodemailer library
+- :memo: Enables detailed logging of server activities using winston library
+- :dog: Implements Git hooks with Husky to optimize development processes
+- :test_tube: Ensure reliability and robustness of the application with thorough testing using Jest and Supertest
+
+
+<!-- Endpoints -->
+
+### Endpoints
+```
+POST /v1/auth/signup - Signup
+POST /v1/auth/login - Login
+POST /v1/auth/refresh - Refresh access token
+POST /v1/forgot-password - Send reset password email
+POST /v1/reset-password/:token - Reset password
+POST /v1/send-verification-email - Send verification email
+POST /v1/verify-email/:token - Verify email
+```
+
+<!-- Project Structure -->
+
+### Project Structure
+
+```
+./src
+├── config/         # Config files
+├── controller/     # Route controllers
+├── middleware/     # Custom middlewares
+├── routes/         # Routes
+├── types/          # Types
+├── utils/          # Utility classes and functions
+├── validations/    # Validation schemas
+├── app.ts          # Express App
+└── index.ts        # App Entrypoint
+```
+
+<!-- Database -->
+
+### Database
+
+Our server relies on MySQL as its primary database management system to store and manage all relevant data. MySQL is a popular and widely used open-source relational database system that provides efficient, secure, and scalable storage and retrieval of data.
+
+To simplify and streamline the process of managing the data stored in the MySQL database, we utilize Prisma, which is a modern, type-safe ORM that supports various databases, including MySQL.
+
+Prisma helps us to write database queries in a more readable and intuitive way, making it easier to manage the data stored in our MySQL database. By using Prisma as our ORM of choice, we can also ensure that our application remains scalable, efficient, and maintainable.
+
+If you're interested in the structure of our database, you can take a look at the data model presented below, which provides an overview of the tables, columns, and relationships within the database.
+
+```js
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id                     String                   @id @default(cuid())
+  name                   String
+  email                  String?                  @unique
+  password               String
+  emailVerified          DateTime?
+  accounts               Account[]
+  refreshTokens          RefreshToken[]
+  resetToken             ResetToken[]
+  emailVerificationToken EmailVerificationToken[]
+}
+
+model RefreshToken {
+  token  String @id
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model ResetToken {
+  token     String   @id
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model EmailVerificationToken {
+  token     String   @id
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+```
+
+#### Account
+
+> Social auth is not yet implemented so that the entity can be different in the future
+
+The Account entity represents a linked social media account for a user. It has the following fields:
+
+- id: A unique identifier for the account.
+- userId: The ID of the user associated with the account.
+- type: The type of account, e.g. oauth.
+- provider: The provider of the account, e.g. facebook.
+- providerAccountId: The ID associated with the account from the provider's perspective.
+- refresh_token: A refresh token used to obtain a new access token.
+- access_token: An access token used to authenticate requests to the provider's API.
+- expires_at: The expiration time of the access token.
+- token_type: The type of access token.
+- scope: The scope of the access token.
+- id_token: An ID token associated with the account.
+- session_state: The session state of the account.
+
+#### User:
+
+The User entity represents a user of the application. It has the following fields:
+
+- id: A unique identifier for the user.
+- name: The name of the user.
+- email: The email address of the user.
+- password: The password of the user.
+- emailVerified: The date and time when the user's email address was verified.
+- accounts: A list of linked social media accounts for the user.
+- refreshTokens: A list of refresh tokens associated with the user.
+- resetToken: A list of reset tokens associated with the user.
+- emailVerificationToken: A list of email verification tokens associated with the user.
+
+#### RefreshToken:
+
+The RefreshToken entity represents a refresh token used to obtain a new access token. It has the following fields:
+
+- token: A unique identifier for the refresh token.
+- user: The user associated with the refresh token.
+- userId: The ID of the user associated with the refresh token.
+
+#### ResetToken:
+
+The ResetToken entity represents a reset token used to reset a user's password. It has the following fields:
+
+- token: A unique identifier for the reset token.
+- expiresAt: The expiration time of the reset token.
+- user: The user associated with the reset token.
+- userId: The ID of the user associated with the reset token.
+
+#### EmailVerificationToken:
+
+The EmailVerificationToken entity represents a token used to verify a user's email address. It has the following fields:
+
+- token: A unique identifier for the email verification token.
+- expiresAt: The expiration time of the email verification token.
+- user: The user associated with the email verification token.
+- userId: The ID of the user associated with the email verification token.
+
+
+<!-- Refresh Token Rotation -->
+
+### Refresh Token Rotation
+
+Refresh token rotation is a security practice used to mitigate the risk of unauthorized access to a user's account or resources. When a user logs in to an application, the application issues an access token and a refresh token. The access token is used to access the user's resources, while the refresh token is used to obtain a new access token when the current one expires.
+
+In refresh token rotation, the application periodically rotates the refresh token, meaning it invalidates the old refresh token and issues a new one. This practice can limit the amount of time an attacker can use a stolen refresh token to gain access to the user's account or resources. By rotating the refresh token, the application reduces the risk of a long-lived refresh token being used to access the user's account or resources without their permission.
+
+![Refresh Token Rotation Flow](https://github.com/Louis3797/express-ts-auth-service/blob/main/assets/refresh_token_rotation_flow_diagram.png)
 
 <!-- Env Variables -->
 
@@ -101,11 +289,44 @@ Maybe you can mention me or this repo in the acknowledgements too
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`NODE_ENV`
+```
+# App's running environment
+NODE_ENV=
 
-`PORT`
+# App's running port
+PORT=
 
-`CORS_ORIGIN`
+# Server url
+SERVER_URL=
+
+# Cors origin url
+CORS_ORIGIN=
+
+# Run node -e "console.log(require('crypto').randomBytes(256).toString('base64'));" in your console to generate a secret
+ACCESS_TOKEN_SECRET=
+
+REFRESH_TOKEN_SECRET=
+
+ACCESS_TOKEN_EXPIRE=
+
+REFRESH_TOKEN_EXPIRE=
+
+# name of the refresh token cookie
+REFRESH_TOKEN_COOKIE_NAME=
+
+MYSQL_DATABASE=
+MYSQL_ROOT_PASSWORD=
+
+# Example: mysql://USER:PASSWORD@HOST:PORT/DATABASE
+DATABASE_URL=
+
+# Configuration for the emial service
+SMTP_HOST=
+SMTP_PORT=
+SMTP_USERNAME=
+SMTP_PASSWORD=
+EMAIL_FROM=
+```
 
 See .env.example for further details
 
@@ -128,13 +349,13 @@ This project uses Yarn as package manager
 ### Installation
 
 ```bash
-  git clone https://github.com/Louis3797/express-ts-boilerplate.git
+  git clone https://github.com/Louis3797/express-ts-auth-service.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd express-ts-boilerplate
+  cd express-ts-auth-service
 ```
 
 ```bash
@@ -151,13 +372,13 @@ Go to the project directory
   yarn lint:fix
 
   # run prettier
-  yarn code:check
+  yarn prettier:check
 
   # fix prettier errors
-  yarn code:format
+  yarn prettier:format
 
   # fix prettier errors in specific file
-  yarn code:format:specific-file <file-name>
+  yarn prettier:format:file <file-name>
 ```
 
 <!-- Running Tests -->
@@ -170,11 +391,24 @@ To run tests, run the following command
   yarn test
 ```
 
+Run tests with watch flag
+
+```bash
+  yarn test:watch
+```
+
+See test coverage
+```bash
+  yarn coverage
+```
+
 <!-- Run Locally -->
 
 ### Run Locally
 
 Start the server in development mode
+
+> Note: Dont forget to define the .env variables
 
 ```bash
   yarn dev
@@ -190,35 +424,65 @@ Start the server in production mode
 
 ### Run with Docker
 
-Build the container
+Run docker compose
 
 ```bash
-  cd express-ts-boilerplate
-  docker build . -t express-ts-boilerplate
+  cd express-ts-auth-service
+  docker-compose up
 ```
 
-Start the container
+<!-- Roadmap -->
+## Roadmap
+* [ ] Winston + morgan for logging ?
+* [ ] Clean and order imports + add index.ts files
+* [ ] Add API Endpoint documentation
+* [ ] Social Auth
+  * [ ] Google
+  * [ ] Github
+  * [ ] Facebook
+  * [ ] Twitter
+* [ ] Better Error handeling
+  * [ ] Custom Error classes like ```AccessTokenNotFoundError```
+* [ ] Integration Tests
 
-```bash
-  docker run -p <port you want the container to run at>:4040 -d express-ts-boilerplate
-```
+
+
+<!-- Contributing -->
+## Contributing
+
+<a href="https://github.com/Louis3797/express-ts-auth-service/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Louis3797/express-ts-auth-service" />
+</a>
+
+
+Contributions are always welcome!
+
+See `CONTRIBUTING.md` for ways to get started.
+
+
+<!-- Code of Conduct -->
+### Code of Conduct
+
+Please read the [Code of Conduct](https://github.com/Louis3797/express-ts-auth-service/blob/main/CODE_OF_CONDUCT.md)
 
 <!-- License -->
 
 ## License
 
-Distributed under the MIT License. See LICENSE.txt for more information.
+Distributed under the MIT License. See LICENSE for more information.
 
 <!-- Contact -->
 
 ## Contact
 
-Louis-Kaan Ay
+Louis-Kaan Ay - louiskaan.ay@gmail.com
 
-Project Link: [https://github.com/Louis3797/express-ts-boilerplate](https://github.com/Louis3797/express-ts-boilerplate)
+Project Link: [https://github.com/Louis3797/express-ts-auth-service](https://github.com/Louis3797/express-ts-auth-service)
 
 <!-- Acknowledgments -->
 
 ## Acknowledgements
 
 - [Readme Template](https://github.com/Louis3797/awesome-readme-template)
+- [Node Express Boilerplate](https://github.com/hagopj13/node-express-boilerplate)
+- [Express Ts Boilerplate](https://github.com/Louis3797/express-ts-boilerplate)
