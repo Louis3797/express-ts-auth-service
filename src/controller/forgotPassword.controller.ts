@@ -35,6 +35,13 @@ export const handleForgotPassword = async (
     return res.status(httpStatus.CONFLICT).json({ error: 'User not found' });
   }
 
+  // check if email is verified
+  if (!user.emailVerified) {
+    res.send(httpStatus.UNAUTHORIZED).json({
+      message: 'Your email is not verified! Please confirm your email!',
+    });
+  }
+
   // Generate a reset token and save it to the database
   const resetToken = uuidv4();
   const expiresAt = new Date(Date.now() + 3600000); // Token expires in 1 hour
@@ -76,7 +83,7 @@ export const handleResetPassword = async (
 
   // Check if the token exists in the database and is not expired
   const resetToken = await prismaClient.resetToken.findFirst({
-    where: { token: token as string, expiresAt: { gt: new Date() } },
+    where: { token: token, expiresAt: { gt: new Date() } },
   });
 
   if (!resetToken) {
@@ -95,6 +102,13 @@ export const handleResetPassword = async (
   // Delete the reset and all other reset tokens that the user owns from the database
   await prismaClient.resetToken.deleteMany({
     where: { userId: resetToken.userId },
+  });
+
+  // Delete also all refresh tokens
+  await prismaClient.refreshToken.deleteMany({
+    where: {
+      userId: resetToken.userId,
+    },
   });
 
   // Return a success message
