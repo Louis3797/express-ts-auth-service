@@ -12,8 +12,8 @@ describe('sanitize', () => {
   });
 
   it('should sanitize strings', () => {
-    const input = '<script>alert("hello world")</script>';
-    const expected = '';
+    const input = '<script>alert("hello world!")</script>';
+    const expected = '&lt;script&gt;alert("hello world!")&lt;/script&gt;';
     expect(sanitize(input)).toBe(expected);
   });
 
@@ -34,22 +34,22 @@ describe('sanitize', () => {
     };
 
     const expected = {
-      name: '',
+      name: '&lt;script&gt;alert("hello world!");&lt;/script&gt;',
       age: 20,
       address: {
         street: '123 Main St',
         city: 'Springfield',
         state: 'IL',
-        zip: ''
+        zip: '&lt;script&gt;alert("hello world!");&lt;/script&gt;'
       },
       friends: [
         {
-          name: '',
+          name: '&lt;script&gt;alert("hello world!");&lt;/script&gt;',
           age: 22
         },
         {
           name: 'Alice',
-          age: ''
+          age: '&lt;script&gt;alert("hello world!");&lt;/script&gt;'
         }
       ]
     };
@@ -59,11 +59,15 @@ describe('sanitize', () => {
 
   it('should sanitize arrays', () => {
     const input = [
-      '<script>alert("hello world")</script>',
+      '<script>alert("hello world!")</script>',
       20,
       ['<div>test</div>']
     ];
-    const expected = ['', 20, ['']];
+    const expected = [
+      '&lt;script&gt;alert("hello world!")&lt;/script&gt;',
+      20,
+      ['&lt;div&gt;test&lt;/div&gt;']
+    ];
     expect(sanitize(input)).toEqual(expected);
   });
 
@@ -74,10 +78,13 @@ describe('sanitize', () => {
     ];
 
     const expected = [
-      { name: '', age: 20 },
+      {
+        name: '&lt;script&gt;alert("hello world!");&lt;/script&gt;',
+        age: 20
+      },
       {
         name: 'Alice',
-        age: ''
+        age: '&lt;script&gt;alert("hello world!");&lt;/script&gt;'
       }
     ];
     expect(sanitize(input)).toEqual(expected);

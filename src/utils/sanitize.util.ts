@@ -45,7 +45,7 @@ export const sanitize = <T extends unknown>(
   // If data is a string, apply XSS filtering and return the sanitized string
   if (typeof data === 'string') {
     const xssOptions: SanitizeOptions = {
-      stripIgnoreTagBody: true,
+      stripIgnoreTagBody: options?.stripIgnoreTagBody ?? false,
       whiteList: options?.whiteList ?? {},
       ...options
     };
