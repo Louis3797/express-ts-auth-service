@@ -2,6 +2,12 @@ import logger from '../middleware/logger';
 import transporter from '../config/nodemailer';
 import config from '../config/config';
 
+/**
+ * This function sends an email to the given email with the reset password link
+ *
+ * @param {string} email - The email of the user
+ * @param {string} token - The reset password token
+ */
 export const sendResetEmail = (email: string, token: string) => {
   const resetLink = `${config.server.url}/api/v1/reset-password/${token}`;
   const mailOptions = {
@@ -19,6 +25,12 @@ export const sendResetEmail = (email: string, token: string) => {
   });
 };
 
+/**
+ * This function sends an email to the given email with the email verification link
+ *
+ * @param {string} email - The email of the user
+ * @param {string} token - The email verification token
+ */
 export const sendVerifyEmail = (email: string, token: string) => {
   const verifyLink = `${config.server.url}/api/v1/verify-email/${token}`;
   const mailOptions = {

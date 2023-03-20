@@ -7,6 +7,14 @@ type RequestValidationSchema = RequireAtLeastOne<
   Record<'body' | 'query' | 'params', ObjectSchema>
 >;
 
+/**
+ * This functions handles the validation of the given request validation schema
+ *
+ * @param {RequestValidationSchema} schema - The schema object can contain optional body, query, and params keys, each with a Joi schema object
+ *
+ * @returns Returns an HTTP response 400 BAD REQUEST if a validation error occurs or calls next if no error occurs
+ *
+ */
 const validate =
   (schema: RequestValidationSchema) =>
   (req: Request, res: Response, next: NextFunction) => {

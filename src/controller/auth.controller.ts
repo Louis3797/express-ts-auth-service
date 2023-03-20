@@ -28,10 +28,16 @@ import logger from '../middleware/logger';
 const { verify } = jwt;
 
 /**
- * Handles Signup
- * @param req
- * @param res
- * @returns
+ * This function handles the signup process for new users. It expects a request object with the following properties:
+ *
+ * @param {TypedRequest<UserSignUpCredentials>} req - The request object that includes user's username, email, and password.
+ * @param {Response} res - The response object that will be used to send the HTTP response.
+ *
+ * @returns {Response} Returns an HTTP response that includes one of the following:
+ *   - A 400 BAD REQUEST status code and an error message if the request body is missing any required parameters.
+ *   - A 409 CONFLICT status code if the user email already exists in the database.
+ *   - A 201 CREATED status code and a success message if the new user is successfully created and a verification email is sent.
+ *   - A 500 INTERNAL SERVER ERROR status code if there is an error in the server.
  */
 export const handleSingUp = async (
   req: TypedRequest<UserSignUpCredentials>,
@@ -86,10 +92,16 @@ export const handleSingUp = async (
 };
 
 /**
- * Handles Login
- * @param req
- * @param res
- * @returns
+ * This function handles the login process for users. It expects a request object with the following properties:
+ *
+ * @param {TypedRequest<UserLoginCredentials>} req - The request object that includes user's email and password.
+ * @param {Response} res - The response object that will be used to send the HTTP response.
+ *
+ * @returns {Response} Returns an HTTP response that includes one of the following:
+ *   - A 400 BAD REQUEST status code and an error message if the request body is missing any required parameters.
+ *   - A 401 UNAUTHORIZED status code if the user email does not exist in the database or the email is not verified or the password is incorrect.
+ *   - A 200 OK status code and an access token if the login is successful and a new refresh token is stored in the database and a new refresh token cookie is set.
+ *   - A 500 INTERNAL SERVER ERROR status code if there is an error in the server.
  */
 export const handleLogin = async (
   req: TypedRequest<UserLoginCredentials>,
@@ -165,14 +177,12 @@ export const handleLogin = async (
       const newRefreshToken = createRefreshToken(user.id);
 
       // store new refresh token in db
-      const dbRefreshToken = await prismaClient.refreshToken.create({
+      await prismaClient.refreshToken.create({
         data: {
           token: newRefreshToken,
           userId: user.id
         }
       });
-
-      console.log(dbRefreshToken);
 
       // save refresh token in cookie
       res.cookie(
@@ -192,10 +202,15 @@ export const handleLogin = async (
 };
 
 /**
- * Handles Logout
- * @param req
- * @param res
- * @returns
+ * This function handles the logout process for users. It expects a request object with the following properties:
+ *
+ * @param {TypedRequest} req - The request object that includes a cookie with a valid refresh token
+ * @param {Response} res - The response object that will be used to send the HTTP response.
+ *
+ * @returns {Response} Returns an HTTP response that includes one of the following:
+ *   - A 204 NO CONTENT status code if the jid cookie is undefined
+ *   - A 204 NO CONTENT status code if the jid does not exists in the database
+ *   - A 204 NO CONTENT status code if the jid cookie is successfully cleared
  */
 export const handleLogout = async (req: TypedRequest, res: Response) => {
   const cookies = req.cookies;
@@ -229,10 +244,17 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
 };
 
 /**
- * Handles refreshing for access tokens
- * @param req
- * @param res
- * @returns
+ * This function handles the refresh process for users. It expects a request object with the following properties:
+ *
+ * @param {Request} req - The request object that includes a cookie with a valid refresh token
+ * @param {Response} res - The response object that will be used to send the HTTP response.
+ *
+ * @returns {Response} Returns an HTTP response that includes one of the following:
+ *   - A 401 UNAUTHORIZED status code if the jid cookie is undefined
+ *   - A 403 FORBIDDEN status code if a refresh token reuse was detected but the token wasn't valid
+ *   - A 403 FORBIDDEN status code if a refresh token reuse was detected but the token was valid
+ *   - A 403 FORBIDDEN status code if the token wasn't valid
+ *   - A 200 OK status code if the token was valid and the user was granted a new refresh and access token
  */
 export const handleRefresh = async (req: Request, res: Response) => {
   const token: string | undefined =
