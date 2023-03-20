@@ -38,8 +38,10 @@
     "jsonwebtoken": "^9.0.0",
     "nodemailer": "^6.9.1",
     "ts-node": "^10.9.1",
+    "utility-types": "^3.10.0",
     "uuid": "^9.0.0",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "xss": "^1.0.14"
   },
   "devDependencies": {
     "@tsconfig/node-lts-strictest-esm": "^18.12.1",
