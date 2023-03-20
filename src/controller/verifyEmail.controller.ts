@@ -1,8 +1,8 @@
-import type { Response, Request } from 'express';
+import type { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { v4 as uuidv4 } from 'uuid';
 import prismaClient from '../config/prisma';
-import type { TypedRequest, EmailRequestBody } from '../types/types';
+import type { EmailRequestBody, TypedRequest } from '../types/types';
 import { sendVerifyEmail } from '../utils/sendEmail.util';
 
 /**

@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import type {
-  UserSignUpCredentials,
-  UserLoginCredentials
+  UserLoginCredentials,
+  UserSignUpCredentials
 } from '../types/types';
 
 export const signupSchema = {

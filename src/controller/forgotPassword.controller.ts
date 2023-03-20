@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import * as argon2 from 'argon2';
 import prismaClient from '../config/prisma';
 import type {
-  TypedRequest,
   EmailRequestBody,
-  ResetPasswordRequestBodyType
+  ResetPasswordRequestBodyType,
+  TypedRequest
 } from '../types/types';
 import { sendResetEmail } from '../utils/sendEmail.util';
 

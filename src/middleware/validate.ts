@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import Joi, { type ObjectSchema } from 'joi';
 import type { RequireAtLeastOne } from '../types/types';

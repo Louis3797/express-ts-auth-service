@@ -19,7 +19,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "promise"],
+  "plugins": ["@typescript-eslint", "promise", "import"],
   "rules": {
     "indent": "off",
     "linebreak-style": ["error", "unix"],
@@ -64,6 +64,11 @@
     "promise/avoid-new": "warn",
     "promise/no-new-statics": "error",
     "promise/no-return-in-finally": "warn",
-    "promise/valid-params": "warn"
+    "promise/valid-params": "warn",
+
+    "sort-imports": [
+      "error",
+      { "ignoreDeclarationSort": true, "ignoreCase": true }
+    ]
   }
 }
