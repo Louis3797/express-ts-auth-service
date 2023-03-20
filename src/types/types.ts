@@ -58,12 +58,6 @@ export interface ResetPasswordRequestBodyType {
   newPassword: string;
 }
 
-export interface XssMiddlewareOptions {
-  body?: boolean;
-  query?: boolean;
-  params?: boolean;
-}
-
 export type Sanitized<T> = T extends (...args: unknown[]) => unknown
   ? T // if T is a function, return it as is
   : T extends object
