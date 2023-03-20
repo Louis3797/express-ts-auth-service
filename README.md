@@ -14,7 +14,6 @@ Maybe you can mention me or this repo in the acknowledgements too
 A pre-built authentication server that uses JSON Web Tokens (JWT) for authentication. It is built using Express.js, TypeScript and MySQL
   </p>
   
-  
 <!-- Badges -->
 <p>
   <a href="https://github.com/Louis3797/express-ts-auth-service/graphs/contributors">
@@ -36,7 +35,7 @@ A pre-built authentication server that uses JSON Web Tokens (JWT) for authentica
     <img src="https://img.shields.io/github/license/Louis3797/express-ts-auth-service.svg" alt="license" />
   </a>
 </p>
-   
+
 <h4>
     <a href="https://github.com/Louis3797/express-ts-auth-service#readme">Documentation</a>
   <span> · </span>
@@ -45,7 +44,6 @@ A pre-built authentication server that uses JSON Web Tokens (JWT) for authentica
     <a href="https://github.com/Louis3797/express-ts-auth-service/issues/">Request Feature</a>
   </h4>
 </div>
-
 
 <!-- Table of Contents -->
 
@@ -59,10 +57,10 @@ A pre-built authentication server that uses JSON Web Tokens (JWT) for authentica
     - [Project Structure](#project-structure)
     - [Database](#database)
       - [Account](#account)
-      - [User:](#user)
-      - [RefreshToken:](#refreshtoken)
-      - [ResetToken:](#resettoken)
-      - [EmailVerificationToken:](#emailverificationtoken)
+      - [User](#user)
+      - [RefreshToken](#refreshtoken)
+      - [ResetToken](#resettoken)
+      - [EmailVerificationToken](#emailverificationtoken)
     - [Refresh Token Rotation](#refresh-token-rotation)
     - [Environment Variables](#environment-variables)
   - [Getting Started](#getting-started)
@@ -122,10 +120,10 @@ This pre-built authentication server is designed to simplify the process of addi
 - :dog: Implements Git hooks with Husky to optimize development processes
 - :test_tube: Ensure reliability and robustness of the application with thorough testing using Jest and Supertest
 
-
 <!-- Endpoints -->
 
 ### Endpoints
+
 ```
 POST /v1/auth/signup - Signup
 POST /v1/auth/login - Login
@@ -238,7 +236,7 @@ The Account entity represents a linked social media account for a user. It has t
 - id_token: An ID token associated with the account.
 - session_state: The session state of the account.
 
-#### User:
+#### User
 
 The User entity represents a user of the application. It has the following fields:
 
@@ -252,7 +250,7 @@ The User entity represents a user of the application. It has the following field
 - resetToken: A list of reset tokens associated with the user.
 - emailVerificationToken: A list of email verification tokens associated with the user.
 
-#### RefreshToken:
+#### RefreshToken
 
 The RefreshToken entity represents a refresh token used to obtain a new access token. It has the following fields:
 
@@ -260,7 +258,7 @@ The RefreshToken entity represents a refresh token used to obtain a new access t
 - user: The user associated with the refresh token.
 - userId: The ID of the user associated with the refresh token.
 
-#### ResetToken:
+#### ResetToken
 
 The ResetToken entity represents a reset token used to reset a user's password. It has the following fields:
 
@@ -269,7 +267,7 @@ The ResetToken entity represents a reset token used to reset a user's password. 
 - user: The user associated with the reset token.
 - userId: The ID of the user associated with the reset token.
 
-#### EmailVerificationToken:
+#### EmailVerificationToken
 
 The EmailVerificationToken entity represents a token used to verify a user's email address. It has the following fields:
 
@@ -277,7 +275,6 @@ The EmailVerificationToken entity represents a token used to verify a user's ema
 - expiresAt: The expiration time of the email verification token.
 - user: The user associated with the email verification token.
 - userId: The ID of the user associated with the email verification token.
-
 
 <!-- Refresh Token Rotation -->
 
@@ -404,6 +401,7 @@ Run tests with watch flag
 ```
 
 See test coverage
+
 ```bash
   yarn coverage
 ```
@@ -439,19 +437,21 @@ Run docker compose
 
 <!-- Roadmap -->
 ## Roadmap
-* [ ] Winston + morgan for logging ?
-* [ ] Clean and order imports + add index.ts files
-* [ ] Add API Endpoint documentation
-* [ ] Social Auth
-  * [ ] Google
-  * [ ] Github
-  * [ ] Facebook
-  * [ ] Twitter
-* [ ] Better Error handeling
-  * [ ] Custom Error classes like ```AccessTokenNotFoundError```
-* [ ] Integration Tests
 
-
+- [ ] Winston + morgan for logging ?
+- [ ] Clean and order imports
+  - [x] Order imports
+  - [ ] Add index.ts files for cleaner imports
+- [x] Add xss attack prevention middleware
+- [ ] Add API Endpoint documentation
+- [ ] Social Auth
+  - [ ] Google
+  - [ ] Github
+  - [ ] Facebook
+  - [ ] Twitter
+- [ ] Better Error handeling
+  - [ ] Custom Error classes like ```AccessTokenNotFoundError```
+- [ ] Integration Tests
 
 <!-- Contributing -->
 ## Contributing
@@ -460,11 +460,9 @@ Run docker compose
   <img src="https://contrib.rocks/image?repo=Louis3797/express-ts-auth-service" />
 </a>
 
-
 Contributions are always welcome!
 
 See `CONTRIBUTING.md` for ways to get started.
-
 
 <!-- Code of Conduct -->
 ### Code of Conduct
