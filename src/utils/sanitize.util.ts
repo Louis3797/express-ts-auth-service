@@ -29,10 +29,6 @@ export const sanitize = <T extends unknown>(
 
   // If data is an object, sanitize each property value in the object and return the sanitized object
   if (typeof data === 'object' && data !== null) {
-    // If the object is frozen or sealed, return as is
-    if (Object.isFrozen(data) || Object.isSealed(data)) {
-      return data as Sanitized<T>;
-    }
     const sanitizedObject = {} as { [K in keyof T]: Sanitized<T[K]> };
 
     // Sanitize each property value in the object

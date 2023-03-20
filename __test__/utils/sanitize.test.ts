@@ -90,30 +90,6 @@ describe('sanitize', () => {
     expect(sanitize(input)).toEqual(expected);
   });
 
-  it('should return frozen objects as is', () => {
-    const input = Object.freeze({
-      name: '<script>alert("hello world")</script>',
-      age: 20,
-      contact: {
-        email: 'test@example.com',
-        phone: '+1234567890'
-      }
-    });
-    expect(sanitize(input)).toBe(input);
-  });
-
-  it('should return sealed objects as is', () => {
-    const input = Object.seal({
-      name: '<script>alert("hello world")</script>',
-      age: 20,
-      contact: {
-        email: 'test@example.com',
-        phone: '+1234567890'
-      }
-    });
-    expect(sanitize(input)).toBe(input);
-  });
-
   it('should allow custom XSS whiteList', () => {
     const input = '<div><a href="http://example.com">Example</a></div>';
     const expected = '<div><a href="http://example.com">Example</a></div>';
