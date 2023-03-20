@@ -1,4 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
+import type { DeepPartial } from 'utility-types';
+import type { IFilterXSSOptions } from 'xss';
 
 // See this for the following types
 // https://stackoverflow.com/questions/34508081/how-to-add-typescript-definitions-to-express-req-res
@@ -8,12 +10,6 @@ export type RequireAtLeastOne<T> = {
   [K in keyof T]-?: Required<Pick<T, K>> &
     Partial<Pick<T, Exclude<keyof T, K>>>;
 }[keyof T];
-
-export type DeepPartial<T> = T extends object
-  ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
-  : T;
 
 // More strictly typed Express.Request type
 export type TypedRequest<
@@ -61,3 +57,21 @@ export interface EmailRequestBody {
 export interface ResetPasswordRequestBodyType {
   newPassword: string;
 }
+
+export interface XssMiddlewareOptions {
+  body?: boolean;
+  query?: boolean;
+  params?: boolean;
+}
+
+export type Sanitized<T> = T extends (...args: unknown[]) => unknown
+  ? T // if T is a function, return it as is
+  : T extends object
+  ? {
+      readonly [K in keyof T]: Sanitized<T[K]>;
+    }
+  : T;
+
+export type SanitizeOptions = IFilterXSSOptions & {
+  whiteList?: IFilterXSSOptions['whiteList'];
+};

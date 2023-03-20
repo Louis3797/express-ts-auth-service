@@ -58,6 +58,11 @@ A pre-built authentication server that uses JSON Web Tokens (JWT) for authentica
     - [Endpoints](#endpoints)
     - [Project Structure](#project-structure)
     - [Database](#database)
+      - [Account](#account)
+      - [User:](#user)
+      - [RefreshToken:](#refreshtoken)
+      - [ResetToken:](#resettoken)
+      - [EmailVerificationToken:](#emailverificationtoken)
     - [Refresh Token Rotation](#refresh-token-rotation)
     - [Environment Variables](#environment-variables)
   - [Getting Started](#getting-started)
@@ -106,6 +111,7 @@ This pre-built authentication server is designed to simplify the process of addi
 - :policeman: Implements essential security features using Helmet middleware
 - :cookie: Parses cookies seamlessly with cookie-parser middleware
 - :gear: Allows cross-origin resource sharing using CORS
+- :soap: Sanitizes request data against cross-site-scripting with xss middleware
 - :capital_abcd: Manages environment variables with ease using dotenv
 - :male_detective: Enforces high code quality standards with ESLint and Prettier
 - :horse_racing: Implements rate limiting to prevent abuse and improve server performance

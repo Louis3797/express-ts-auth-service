@@ -10,6 +10,7 @@ import isAuth from './middleware/isAuth';
 import { errorHandler } from './middleware/errorHandler';
 import config from './config/config';
 import authLimiter from './middleware/authLimiter';
+import { xssMiddleware } from './middleware/xssMiddleware';
 
 const app: Express = express();
 
@@ -17,13 +18,15 @@ const app: Express = express();
 app.use(helmet());
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
-// Compression is used to reduce the size of the response body
+
+app.use(xssMiddleware);
 
 // parse json request body
 app.use(express.json());
 
 app.use(cookieParser());
 
+// Compression is used to reduce the size of the response body
 app.use(compression({ filter: compressFilter }));
 
 app.use(
