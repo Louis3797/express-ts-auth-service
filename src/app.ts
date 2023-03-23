@@ -4,7 +4,6 @@ import helmet from 'helmet';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import compressFilter from './utils/compressFilter.util';
-// import config from './config/config';
 import { authRouter, passwordRouter, verifyEmailRouter } from './routes/v1';
 import isAuth from './middleware/isAuth';
 import { errorHandler } from './middleware/errorHandler';
