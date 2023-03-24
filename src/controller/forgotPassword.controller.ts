@@ -33,8 +33,8 @@ export const handleForgotPassword = async (
   const user = await prismaClient.user.findUnique({ where: { email } });
 
   // check if email is verified
-  if (!user || !user.emailVerified) {
-    res.send(httpStatus.UNAUTHORIZED).json({
+  if (!user || user.emailVerified) {
+    return res.send(httpStatus.UNAUTHORIZED).json({
       message: 'Your email is not verified! Please confirm your email!'
     });
   }
