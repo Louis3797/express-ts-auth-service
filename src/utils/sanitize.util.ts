@@ -1,4 +1,4 @@
-import type { Sanitized, SanitizeOptions } from 'src/types/types';
+import type { Sanitized, SanitizeOptions } from '../types/types';
 import xss from 'xss';
 
 /**
