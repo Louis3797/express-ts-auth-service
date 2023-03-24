@@ -25,7 +25,7 @@
     // "moduleDetection": "auto",                        /* Control what method is used to detect module-format JS files. */
 
     /* Modules */
-    "module": "commonjs" /* Specify what module code is generated. */,
+    // "module": "commonjs" /* Specify what module code is generated. */,
     //"rootDir": "src/",                                    /* Specify the root folder within your source files. */
     //"moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
@@ -102,5 +102,5 @@
   },
   "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
   "exclude": ["node_modules"],
-  "include": ["./src/**/*.tsx", "./src/**/*.ts", "./src/**/*.d.ts", "./__test__/**/*.ts"]
+  "include": ["./src/**/*.ts", "./src/**/*.d.ts", "__test__"]
 }

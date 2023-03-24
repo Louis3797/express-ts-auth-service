@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 import httpStatus from 'http-status';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import * as argon2 from 'argon2';
 import prismaClient from '../config/prisma';
 import type {
@@ -31,19 +31,16 @@ export const handleForgotPassword = async (
 
   // Check if the email exists in the database
   const user = await prismaClient.user.findUnique({ where: { email } });
-  if (!user) {
-    return res.status(httpStatus.CONFLICT).json({ error: 'User not found' });
-  }
 
   // check if email is verified
-  if (!user.emailVerified) {
-    res.send(httpStatus.UNAUTHORIZED).json({
+  if (!user || user.emailVerified) {
+    return res.send(httpStatus.UNAUTHORIZED).json({
       message: 'Your email is not verified! Please confirm your email!'
     });
   }
 
   // Generate a reset token and save it to the database
-  const resetToken = uuidv4();
+  const resetToken = randomUUID();
   const expiresAt = new Date(Date.now() + 3600000); // Token expires in 1 hour
   await prismaClient.resetToken.create({
     data: {

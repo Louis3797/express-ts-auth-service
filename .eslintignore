@@ -5,4 +5,4 @@ yarn-error.log
 logs
 coverage
 data
-jest.config.js
+*.config.js

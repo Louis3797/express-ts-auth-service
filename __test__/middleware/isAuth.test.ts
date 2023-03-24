@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import type { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import isAuth from '../../src/middleware/isAuth';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import config from '../../src/config/config';
