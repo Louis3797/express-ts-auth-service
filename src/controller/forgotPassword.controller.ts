@@ -31,12 +31,9 @@ export const handleForgotPassword = async (
 
   // Check if the email exists in the database
   const user = await prismaClient.user.findUnique({ where: { email } });
-  if (!user) {
-    return res.status(httpStatus.CONFLICT).json({ error: 'User not found' });
-  }
 
   // check if email is verified
-  if (!user.emailVerified) {
+  if (!user || !user.emailVerified) {
     res.send(httpStatus.UNAUTHORIZED).json({
       message: 'Your email is not verified! Please confirm your email!'
     });
