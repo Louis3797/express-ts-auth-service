@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 import httpStatus from 'http-status';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import * as argon2 from 'argon2';
 import prismaClient from '../config/prisma';
 import type {
@@ -40,7 +40,7 @@ export const handleForgotPassword = async (
   }
 
   // Generate a reset token and save it to the database
-  const resetToken = uuidv4();
+  const resetToken = randomUUID();
   const expiresAt = new Date(Date.now() + 3600000); // Token expires in 1 hour
   await prismaClient.resetToken.create({
     data: {

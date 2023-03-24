@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import prismaClient from '../config/prisma';
 import type { EmailRequestBody, TypedRequest } from '../types/types';
 import { sendVerifyEmail } from '../utils/sendEmail.util';
@@ -57,7 +57,7 @@ export const sendVerificationEmail = async (
   }
 
   // Generate a new verification token and save it to the database
-  const token = uuidv4();
+  const token = randomUUID();
   const expiresAt = new Date(Date.now() + 3600000); // Token expires in 1 hour
   await prismaClient.emailVerificationToken.create({
     data: {
