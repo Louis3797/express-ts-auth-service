@@ -323,7 +323,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
             userId: payload.userId
           }
         })
-        .catch((err) => {
+        .catch((err: Error) => {
           logger.error(err);
         });
 
