@@ -1,6 +1,6 @@
 declare namespace NodeJS {
-  interface ProcessEnv {
-    readonly NODE_ENV: 'production' | 'development' | 'staging';
+  export interface ProcessEnv {
+    readonly NODE_ENV: 'production' | 'development' | 'test';
     readonly PORT: string;
     readonly SERVER_URL: string;
     readonly CORS_ORIGIN: string;
