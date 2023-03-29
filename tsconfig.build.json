@@ -1,6 +1,9 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+    "compilerOptions": {
+      "esModuleInterop": true
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "__test__", "dist"]
   }
   
