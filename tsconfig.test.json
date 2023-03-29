@@ -1,14 +1,8 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-      "esModuleInterop": true,
-      "target": "es2022",
-      "moduleResolution": "node",  
-      "composite": true,    
-      "types": ["jest", "node"]
-    },
-    "include": ["**/*.{spec|test}.ts", "__test__", "./src/**/*.ts"],
-    "exclude": ["node_modules", "dist"],
-
-  }
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest", "node"], 
+  },
+  "include": ["jest.config.ts", "src/**/*.ts", "__test__", "**/*.test.ts"]
+}
   

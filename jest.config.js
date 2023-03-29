@@ -4,9 +4,17 @@ module.exports = {
   testEnvironment: 'node',
   clearMocks: true,
   collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: 'coverage',
   coverageReporters: ['json', 'html'],
-  modulePathIgnorePatterns: ['./dist/'],
+  modulePathIgnorePatterns: [
+    './dist',
+    './coverage',
+    './logs',
+    './prisma',
+    './assets',
+    './node_modules'
+  ],
   transform: {
     '^.+\\.m?[tj]sx?$': [
       'ts-jest',

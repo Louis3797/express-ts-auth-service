@@ -1,7 +1,8 @@
 {
   "env": {
-    "es2021": true,
-    "node": true
+    "es2022": true,
+    "node": true,
+    "jest": true
   },
   "extends": [
     "eslint:recommended",
@@ -15,9 +16,9 @@
   "overrides": [],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": "latest",
+    "ecmaVersion": 2022,
     "sourceType": "module",
-    "project": ["./tsconfig.json", "./tsconfig.test.json"]
+    "project": "./tsconfig.json"
   },
   "plugins": ["@typescript-eslint", "promise", "import"],
   "rules": {

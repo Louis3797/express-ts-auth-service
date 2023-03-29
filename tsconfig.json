@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es2022",
     "module": "commonjs",
-    "lib": ["es2022"],
-    "moduleResolution": "node",
-    "esModuleInterop": true,
     "declaration": true,
-    "declarationDir": "./dist/types",
-    "outDir": "./dist",
-    "baseUrl": ".",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2022",
     "sourceMap": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "incremental": true,
+    "skipLibCheck": true, 
     "typeRoots": ["./node_modules/@types", "./src/types"],
 
     // strict settings
@@ -29,15 +29,9 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true, 
 
-    "forceConsistentCasingInFileNames": true,
-    "importsNotUsedAsValues": "error",
-    "allowJs": true,
-    "checkJs": true
+    "checkJs": false,
+    "allowJs": false
   },
-  "include": ["./src/**/*.ts", "./src/**/*.d.ts"],
-  "exclude": ["node_modules", "dist", "__test__", "**/**/*.{spec|test}.ts"],
-  "references": [
-    { "path": "./tsconfig.test.json" }
-  ]
 }
