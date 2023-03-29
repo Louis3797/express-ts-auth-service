@@ -5,21 +5,21 @@
   "author": "Louis-Kaan Ay",
   "license": "MIT",
   "private": false,
-  "main": "index.js",
+  "main": "./dist/index.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "tsc --project './tsconfig.json' --watch &NODE_ENV=development nodemon --trace-warnings ./dist/index.js",
-    "build": "tsc --project './tsconfig.json'",
+    "dev": "tsc --project './tsconfig.build.json' --watch &NODE_ENV=development nodemon --trace-warnings ./dist/index.js",
+    "build": "tsc --project './tsconfig.build.json'",
     "start": "yarn run build && NODE_ENV=production node --trace-warnings ./dist/index.js",
-    "watch": "tsc --project './tsconfig.json' --watch",
-    "lint": "eslint src/**/*.ts",
+    "watch": "tsc --project './tsconfig.build.json' --watch",
+    "lint": "eslint src/**/*.ts __test__/**/*.test.ts",
     "lint:fix": "eslint --fix --ext .",
     "prettier:format": "prettier --write .",
     "prettier:check": "prettier --check .",
     "prettier:format:file": "prettier --write ",
     "test": "jest",
     "test:watch": "jest -i --watchAll",
-    "coverage": "jest -i --coverage",
+    "coverage": "jest --coverage",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -78,12 +78,12 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Louis3797/express-ts-auth-service"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/Louis3797/express-ts-auth-service/issues"
   },
-  "homepage": "",
+  "homepage": "https://github.com/Louis3797/express-ts-auth-service",
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
       "npx prettier --write",
