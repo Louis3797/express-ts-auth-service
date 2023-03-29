@@ -6,14 +6,18 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: 'coverage',
-  coverageReporters: ['json', 'html'],
+  coverageReporters: ['json', 'html', 'text'],
   modulePathIgnorePatterns: [
     './dist',
     './coverage',
     './logs',
     './prisma',
     './assets',
-    './node_modules'
+    './node_modules',
+    'index.ts',
+    'app.ts',
+    'src/validations', // no need for testing validations
+    'src/routes'
   ],
   transform: {
     '^.+\\.m?[tj]sx?$': [
