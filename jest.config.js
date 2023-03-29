@@ -6,5 +6,13 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageReporters: ['json', 'html'],
-  modulePathIgnorePatterns: ['./dist/']
+  modulePathIgnorePatterns: ['./dist/'],
+  transform: {
+    '^.+\\.m?[tj]sx?$': [
+      'ts-jest',
+      {
+        tsconfig: './tsconfig.test.json'
+      }
+    ]
+  }
 };
