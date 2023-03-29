@@ -19,7 +19,7 @@
     "prettier:format:file": "prettier --write ",
     "test": "jest",
     "test:watch": "jest -i --watchAll",
-    "coverage": "jest --coverage",
+    "coverage": "jest -i --coverage",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -74,7 +74,7 @@
     "prisma": "^4.11.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
-    "typescript": "*"
+    "typescript": "5.0.2"
   },
   "repository": {
     "type": "git",
