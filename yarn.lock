@@ -721,11 +721,6 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
-"@tsconfig/node-lts-strictest-esm@^18.12.1":
-  version "18.12.1"
-  resolved "https://registry.yarnpkg.com/@tsconfig/node-lts-strictest-esm/-/node-lts-strictest-esm-18.12.1.tgz#6525fec53f46ee6061d3b30f831b5624118a9e64"
-  integrity sha512-LvBLmaC6Q/txTddLc11OeMHF9XjJFzlilkETJuvBlUvHy9pPiMsoH3nxWZM1FMSO53zp4mJP6gzOzxKEq0me7Q==
-
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"

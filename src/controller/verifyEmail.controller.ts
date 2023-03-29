@@ -71,7 +71,7 @@ export const sendVerificationEmail = async (
   sendVerifyEmail(email, token);
 
   // Return a success message
-  res.status(httpStatus.OK).json({ message: 'Verification email sent' });
+  return res.status(httpStatus.OK).json({ message: 'Verification email sent' });
 };
 
 export const handleVerifyEmail = async (req: Request, res: Response) => {
@@ -102,5 +102,5 @@ export const handleVerifyEmail = async (req: Request, res: Response) => {
   });
 
   // Return a success message
-  res.status(200).json({ message: 'Email verification successful' });
+  return res.status(200).json({ message: 'Email verification successful' });
 };

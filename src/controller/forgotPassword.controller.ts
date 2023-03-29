@@ -54,7 +54,9 @@ export const handleForgotPassword = async (
   sendResetEmail(email, resetToken);
 
   // Return a success message
-  res.status(httpStatus.OK).json({ message: 'Password reset email sent' });
+  return res
+    .status(httpStatus.OK)
+    .json({ message: 'Password reset email sent' });
 };
 
 /**
@@ -109,5 +111,7 @@ export const handleResetPassword = async (
   });
 
   // Return a success message
-  res.status(httpStatus.OK).json({ message: 'Password reset successful' });
+  return res
+    .status(httpStatus.OK)
+    .json({ message: 'Password reset successful' });
 };

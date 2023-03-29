@@ -240,7 +240,7 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
     config.jwt.refresh_token.cookie_name,
     clearRefreshTokenCookieConfig
   );
-  res.sendStatus(httpStatus.NO_CONTENT);
+  return res.sendStatus(httpStatus.NO_CONTENT);
 };
 
 /**
@@ -334,7 +334,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
         refreshTokenCookieConfig
       );
 
-      res.json({ accessToken });
+      return res.json({ accessToken });
     }
   );
 };
