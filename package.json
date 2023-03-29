@@ -44,7 +44,6 @@
     "xss": "^1.0.14"
   },
   "devDependencies": {
-    "@tsconfig/node-lts-strictest-esm": "^18.12.1",
     "@types/argon2": "^0.15.0",
     "@types/compression": "^1.7.2",
     "@types/cookie-parser": "^1.4.3",
