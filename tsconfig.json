@@ -10,9 +10,13 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "sourceRoot": "./src",
     "incremental": true,
     "skipLibCheck": true, 
     "typeRoots": ["./node_modules/@types", "./src/types"],
+    "lib": ["es2022", "dom"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
 
     // strict settings
     "strict": true,
@@ -30,8 +34,5 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "forceConsistentCasingInFileNames": true, 
-
-    "checkJs": false,
-    "allowJs": false
   },
 }

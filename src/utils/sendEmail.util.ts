@@ -16,7 +16,7 @@ export const sendResetEmail = (email: string, token: string) => {
     subject: 'Password reset',
     html: `Please click <a href="${resetLink}">here</a> to reset your password.`
   };
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter?.sendMail(mailOptions, (error, info) => {
     if (error) {
       logger.error(error);
     } else {
@@ -39,7 +39,7 @@ export const sendVerifyEmail = (email: string, token: string) => {
     subject: 'Email verification',
     html: `Please click <a href="${verifyLink}">here</a> to verify your email.`
   };
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter?.sendMail(mailOptions, (error, info) => {
     if (error) {
       logger.error(error);
     } else {

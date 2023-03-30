@@ -140,11 +140,11 @@ export const handleLogin = async (
       // if the token does not belong to the current user, then we delete all refresh tokens
       // of the user stored in the db to be on the safe site
       // we also clear the cookie in both cases
-      if (cookies?.jid) {
+      if (cookies?.[config.jwt.refresh_token.cookie_name]) {
         // check if the given refresh token is from the current user
         const checkRefreshToken = await prismaClient.refreshToken.findUnique({
           where: {
-            token: cookies.jid
+            token: cookies[config.jwt.refresh_token.cookie_name]
           }
         });
 
@@ -160,7 +160,7 @@ export const handleLogin = async (
           // else everything is fine and we just need to delete the one token
           await prismaClient.refreshToken.delete({
             where: {
-              token: cookies.jid
+              token: cookies[config.jwt.refresh_token.cookie_name]
             }
           });
         }
@@ -208,15 +208,17 @@ export const handleLogin = async (
  * @param {Response} res - The response object that will be used to send the HTTP response.
  *
  * @returns {Response} Returns an HTTP response that includes one of the following:
- *   - A 204 NO CONTENT status code if the jid cookie is undefined
- *   - A 204 NO CONTENT status code if the jid does not exists in the database
- *   - A 204 NO CONTENT status code if the jid cookie is successfully cleared
+ *   - A 204 NO CONTENT status code if the refresh token cookie is undefined
+ *   - A 204 NO CONTENT status code if the refresh token does not exists in the database
+ *   - A 204 NO CONTENT status code if the refresh token cookie is successfully cleared
  */
 export const handleLogout = async (req: TypedRequest, res: Response) => {
   const cookies = req.cookies;
 
-  if (!cookies?.jid) return res.sendStatus(httpStatus.NO_CONTENT); // No content
-  const refreshToken = cookies.jid;
+  if (!cookies[config.jwt.refresh_token.cookie_name]) {
+    return res.sendStatus(httpStatus.NO_CONTENT); // No content
+  }
+  const refreshToken = cookies[config.jwt.refresh_token.cookie_name];
 
   // Is refreshToken in db?
   const foundRft = await prismaClient.refreshToken.findUnique({
@@ -250,7 +252,7 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
  * @param {Response} res - The response object that will be used to send the HTTP response.
  *
  * @returns {Response} Returns an HTTP response that includes one of the following:
- *   - A 401 UNAUTHORIZED status code if the jid cookie is undefined
+ *   - A 401 UNAUTHORIZED status code if the refresh token cookie is undefined
  *   - A 403 FORBIDDEN status code if a refresh token reuse was detected but the token wasn't valid
  *   - A 403 FORBIDDEN status code if a refresh token reuse was detected but the token was valid
  *   - A 403 FORBIDDEN status code if the token wasn't valid
