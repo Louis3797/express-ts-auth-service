@@ -17,6 +17,7 @@ const createTestAccount = async () => {
       }
     });
     logger.info(`Test account created: ${account.user}`);
+    console.log(account);
   } catch (error) {
     console.error('Failed to create a test account:', error);
   }

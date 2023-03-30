@@ -28,14 +28,14 @@ const validate =
     );
     if (!error) {
       next();
+    } else {
+      const errors = error?.details.map((err) => ({
+        field: err.path.join(', '),
+        message: err.message
+      }));
+
+      res.status(httpStatus.BAD_REQUEST).json({ errors });
     }
-
-    const errors = error?.details.map((err) => ({
-      field: err.path.join(', '),
-      message: err.message
-    }));
-
-    res.status(httpStatus.BAD_REQUEST).json({ errors });
   };
 
 export default validate;

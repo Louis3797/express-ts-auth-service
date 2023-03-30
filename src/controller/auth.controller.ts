@@ -39,7 +39,7 @@ const { verify } = jwt;
  *   - A 201 CREATED status code and a success message if the new user is successfully created and a verification email is sent.
  *   - A 500 INTERNAL SERVER ERROR status code if there is an error in the server.
  */
-export const handleSingUp = async (
+export const handleSignUp = async (
   req: TypedRequest<UserSignUpCredentials>,
   res: Response
 ) => {
@@ -87,7 +87,7 @@ export const handleSingUp = async (
 
     res.status(httpStatus.CREATED).json({ message: 'New user created' });
   } catch (err) {
-    res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -127,7 +127,7 @@ export const handleLogin = async (
 
   // check if email is verified
   if (!user.emailVerified) {
-    res.send(httpStatus.UNAUTHORIZED).json({
+    res.status(httpStatus.UNAUTHORIZED).json({
       message: 'Your email is not verified! Please confirm your email!'
     });
   }
@@ -194,10 +194,10 @@ export const handleLogin = async (
       // send access token per json to user so it can be stored in the localStorage
       return res.json({ accessToken });
     } else {
-      return res.sendStatus(httpStatus.UNAUTHORIZED);
+      return res.status(httpStatus.UNAUTHORIZED);
     }
   } catch (err) {
-    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -259,12 +259,10 @@ export const handleLogout = async (req: TypedRequest, res: Response) => {
  *   - A 200 OK status code if the token was valid and the user was granted a new refresh and access token
  */
 export const handleRefresh = async (req: Request, res: Response) => {
-  const token: string | undefined =
+  const refreshToken: string | undefined =
     req.cookies[config.jwt.refresh_token.cookie_name];
 
-  if (!token) return res.sendStatus(httpStatus.UNAUTHORIZED);
-
-  const refreshToken = token;
+  if (!refreshToken) return res.sendStatus(httpStatus.UNAUTHORIZED);
 
   // clear refresh cookie
   res.clearCookie(
@@ -284,7 +282,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
       async (err: unknown, payload: JwtPayload) => {
-        if (err) return res.sendStatus(httpStatus.FORBIDDEN);
+        if (err) return res.status(httpStatus.FORBIDDEN);
         logger.warn('attempted refresh token reuse!');
         await prismaClient.refreshToken.deleteMany({
           where: {
@@ -293,7 +291,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
         });
       }
     );
-    return res.sendStatus(httpStatus.FORBIDDEN);
+    return res.status(httpStatus.FORBIDDEN);
   }
 
   // delete from db
