@@ -35,6 +35,7 @@ model User {
   email                  String?                  @unique
   password               String
   emailVerified          DateTime?
+  created_at             DateTime                 @default(now())
   accounts               Account[]
   refreshTokens          RefreshToken[]
   resetToken             ResetToken[]
@@ -42,21 +43,27 @@ model User {
 }
 
 model RefreshToken {
-  token  String @id
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  id         String   @id @default(cuid())
+  token      String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  created_at DateTime @default(now())
 }
 
 model ResetToken {
-  token     String   @id
-  expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  id         String   @id @default(cuid())
+  token      String   @unique
+  expiresAt  DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  created_at DateTime @default(now())
 }
 
 model EmailVerificationToken {
-  token     String   @id
-  expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  id         String   @id @default(cuid())
+  token      String   @unique
+  expiresAt  DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  created_at DateTime @default(now())
 }
