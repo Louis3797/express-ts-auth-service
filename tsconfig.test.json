@@ -1,8 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["jest", "node"], 
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "module": "commonjs"
   },
-  "include": ["jest.config.ts", "src/**/*.ts", "__test__", "**/*.test.ts"]
+  "include": ["jest.config.ts", "src/**/*.ts", "__test__/**/*.test.ts", "**/*.test.ts"]
 }
   
