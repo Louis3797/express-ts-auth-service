@@ -269,6 +269,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
     config.jwt.refresh_token.cookie_name,
     clearRefreshTokenCookieConfig
   );
+
   // check if refresh token is in db
   const foundRefreshToken = await prismaClient.refreshToken.findUnique({
     where: {
@@ -280,10 +281,13 @@ export const handleRefresh = async (req: Request, res: Response) => {
   if (!foundRefreshToken) {
     verify(
       refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
+      config.jwt.refresh_token.secret,
       async (err: unknown, payload: JwtPayload) => {
-        if (err) return res.status(httpStatus.FORBIDDEN);
-        logger.warn('attempted refresh token reuse!');
+        if (err) return res.sendStatus(httpStatus.FORBIDDEN);
+
+        logger.warn('Attempted refresh token reuse!');
+
+        // Delete all tokens of the user because we detected that a token was stolen from him
         await prismaClient.refreshToken.deleteMany({
           where: {
             userId: payload.userId
@@ -304,7 +308,7 @@ export const handleRefresh = async (req: Request, res: Response) => {
   // evaluate jwt
   verify(
     refreshToken,
-    process.env.REFRESH_TOKEN_SECRET,
+    config.jwt.refresh_token.secret,
     async (err: unknown, payload: JwtPayload) => {
       if (err || foundRefreshToken.userId !== payload.userId) {
         return res.sendStatus(httpStatus.FORBIDDEN);
