@@ -164,18 +164,19 @@ Prisma helps us to write database queries in a more readable and intuitive way, 
 If you're interested in the structure of our database, you can take a look at the data model presented below, which provides an overview of the tables, columns, and relationships within the database.
 
 ```js
+
 model Account {
-  id                String  @id @default(cuid())
+  id                String   @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expiresAt         DateTime
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?  @db.Text
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -189,6 +190,7 @@ model User {
   email                  String?                  @unique
   password               String
   emailVerified          DateTime?
+  createdAt              DateTime                 @default(now())
   accounts               Account[]
   refreshTokens          RefreshToken[]
   resetToken             ResetToken[]
@@ -196,25 +198,30 @@ model User {
 }
 
 model RefreshToken {
-  token  String @id
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  id        String   @id @default(cuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
 }
 
 model ResetToken {
-  token     String   @id
+  id        String   @id @default(cuid())
+  token     String   @unique
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+  createdAt DateTime @default(now())
 }
 
 model EmailVerificationToken {
-  token     String   @id
+  id        String   @id @default(cuid())
+  token     String   @unique
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+  createdAt DateTime @default(now())
 }
-
 ```
 
 #### Account
@@ -230,7 +237,7 @@ The Account entity represents a linked social media account for a user. It has t
 - providerAccountId: The ID associated with the account from the provider's perspective.
 - refresh_token: A refresh token used to obtain a new access token.
 - access_token: An access token used to authenticate requests to the provider's API.
-- expires_at: The expiration time of the access token.
+- expiresAt: The expiration time of the access token.
 - token_type: The type of access token.
 - scope: The scope of the access token.
 - id_token: An ID token associated with the account.
@@ -245,6 +252,7 @@ The User entity represents a user of the application. It has the following field
 - email: The email address of the user.
 - password: The password of the user.
 - emailVerified: The date and time when the user's email address was verified.
+- createdAt: The date of creation.
 - accounts: A list of linked social media accounts for the user.
 - refreshTokens: A list of refresh tokens associated with the user.
 - resetToken: A list of reset tokens associated with the user.
@@ -254,27 +262,33 @@ The User entity represents a user of the application. It has the following field
 
 The RefreshToken entity represents a refresh token used to obtain a new access token. It has the following fields:
 
-- token: A unique identifier for the refresh token.
+- id: A unique identifier for the refresh token.
+- token: The token itself.
 - user: The user associated with the refresh token.
 - userId: The ID of the user associated with the refresh token.
+- createdAt: The date of creation.
 
 #### ResetToken
 
 The ResetToken entity represents a reset token used to reset a user's password. It has the following fields:
 
-- token: A unique identifier for the reset token.
+- id: A unique identifier for the refresh token.
+- token: The token itself.
 - expiresAt: The expiration time of the reset token.
 - user: The user associated with the reset token.
 - userId: The ID of the user associated with the reset token.
+- createdAt: The date of creation.
 
 #### EmailVerificationToken
 
 The EmailVerificationToken entity represents a token used to verify a user's email address. It has the following fields:
 
-- token: A unique identifier for the email verification token.
+- id: A unique identifier for the refresh token.
+- token: The token itself.
 - expiresAt: The expiration time of the email verification token.
 - user: The user associated with the email verification token.
 - userId: The ID of the user associated with the email verification token.
+- createdAt: The date of creation.
 
 <!-- Refresh Token Rotation -->
 
