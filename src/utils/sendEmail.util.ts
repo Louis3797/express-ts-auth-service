@@ -14,7 +14,12 @@ export const sendResetEmail = (email: string, token: string) => {
     from: config.email.from,
     to: email,
     subject: 'Password reset',
-    html: `Please click <a href="${resetLink}">here</a> to reset your password.`
+    html: `
+      <p>Please reset your password by clicking the button below:</p>
+      <form action="${resetLink}" method="POST">
+        <button type="submit">Reset Password</button>
+      </form>
+    `
   };
   console.log(resetLink);
   transporter?.sendMail(mailOptions, (error, info) => {
@@ -38,7 +43,12 @@ export const sendVerifyEmail = (email: string, token: string) => {
     from: config.email.from,
     to: email,
     subject: 'Email verification',
-    html: `Please click <a href="${verifyLink}">here</a> to verify your email.`
+    html: `
+      <p>Please verify your email by clicking the button below:</p>
+      <form action="${verifyLink}" method="POST">
+        <button type="submit">Verify Email</button>
+      </form>
+    `
   };
   console.log(verifyLink);
   transporter?.sendMail(mailOptions, (error, info) => {
