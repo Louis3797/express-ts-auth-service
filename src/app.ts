@@ -11,11 +11,12 @@ import config from './config/config';
 import authLimiter from './middleware/authLimiter';
 import { xssMiddleware } from './middleware/xssMiddleware';
 import path from 'path';
+import corsConfig from './config/cors';
 
 const app: Express = express();
 
 // Helmet is used to secure this app by configuring the http-header
-app.use(helmet());
+app.use(helmet.frameguard({ action: 'deny' }));
 
 // parse json request body
 app.use(express.json());
@@ -30,13 +31,7 @@ app.use(cookieParser());
 // Compression is used to reduce the size of the response body
 app.use(compression({ filter: compressFilter }));
 
-app.use(
-  cors({
-    // origin is given a array if we want to have multiple origins later
-    origin: String(config.cors.cors_origin).split('|'),
-    credentials: true
-  })
-);
+app.use(cors(corsConfig));
 
 if (config.node_env === 'production') {
   app.use('/api/v1/auth', authLimiter);
