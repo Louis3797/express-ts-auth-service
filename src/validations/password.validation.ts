@@ -9,9 +9,11 @@ export const forgotPasswordSchema = {
 
 export const resetPasswordSchema = {
   body: Joi.object().keys({
-    newPassword: Joi.string().required().min(6)
+    newPassword: Joi.string().required().min(6).max(150)
   }),
   params: Joi.object().keys({
-    token: Joi.string().required().min(1)
+    token: Joi.string().regex(
+      /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/
+    )
   })
 };
