@@ -9,6 +9,8 @@ export const sendVerifyEmailSchema = {
 
 export const verifyEmailSchema = {
   params: Joi.object().keys({
-    token: Joi.string().required().min(1)
+    token: Joi.string().regex(
+      /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/
+    )
   })
 };
